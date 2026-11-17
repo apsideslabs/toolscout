@@ -27,7 +27,9 @@ Most directories are alphabetical, which means you need the name before you can 
 
 **Built to a system, not a template.** Warm paper field, near-black ink, deep pine for structure, one vermilion for action, gold used maybe five times on the whole page — the 60/30/10 discipline the rest of the studio works to. Newsreader carries the editorial voice, Instrument Sans the interface, JetBrains Mono every label and number. Depth is soft and layered: 1px hairlines, 8–22px radii, four shadow steps, one gradient panel. No flat slabs, no hard-edged boxes, no animation library.
 
-**Searchable by constraint.** Free tier, open source, self-hostable, active, library, service, app, CLI — stackable, and encoded in the URL so a filtered view is a shareable link.
+**Searchable by constraint.** Free tier, open source, self-hostable, active, library, service, app, CLI — stackable, encoded in the URL, and copyable with one button, so a filtered view is a shareable link.
+
+**Matched terms are marked.** Searching puts a gold rule under the words that hit, in the name, the tagline and the trade-off line, so you can see *why* a tool surfaced. When nothing matches, the empty state offers recoverable queries instead of a dead end.
 
 ---
 

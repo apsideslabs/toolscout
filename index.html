@@ -92,11 +92,15 @@
               <option value="stars">Most starred</option>
               <option value="name">A–Z</option>
             </select>
+            <button class="ghost" id="share" type="button">Copy link</button>
             <button class="ghost" id="clear" type="button">Clear</button>
           </div>
         </div>
         <ol class="tools" id="tools"></ol>
-        <p class="empty" id="empty" hidden>Nothing matches those constraints at once. Loosen one — or read <a href="#method">the method</a> for where else to look.</p>
+        <div id="empty" hidden>
+          <p class="empty">Nothing matches those constraints at once. Loosen one — or try:</p>
+          <div class="suggest-row" id="suggestRow"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -166,6 +170,10 @@
         <h3>Built with</h3>
         <p>HTML, CSS and one script. No framework, no build step, no tracking.</p>
       </div>
+    </div>
+    <div class="colophon">
+      <span>Set in <b>Newsreader</b>, <b>Instrument Sans</b> and <b>JetBrains Mono</b></span>
+      <span><b>117</b> tools · <b>17</b> jobs · checked <b id="coloDate">—</b></span>
     </div>
   </div>
 </footer>

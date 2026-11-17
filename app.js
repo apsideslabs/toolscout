@@ -32,6 +32,20 @@
       .replace(/"/g, "&quot;");
   }
 
+  function escapeRe(s) {
+    return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  }
+
+  /* wrap matched query terms in <mark>, escaping every fragment */
+  function highlight(text, toks) {
+    var s = String(text == null ? "" : text);
+    if (!toks || !toks.length) return esc(s);
+    var re = new RegExp("(" + toks.map(escapeRe).join("|") + ")", "gi");
+    return s.split(re).map(function (part, i) {
+      return i % 2 ? "<mark>" + esc(part) + "</mark>" : esc(part);
+    }).join("");
+  }
+
   function daysSince(iso) {
     if (!iso) return Infinity;
     return Math.round((CHECKED_MS - Date.parse(iso + "T00:00:00Z")) / DAY);
@@ -225,14 +239,25 @@
     return TOOLS.filter(function (t) { return t.jobs.indexOf(id) > -1; }).length;
   }
 
+  function samples(id) {
+    return TOOLS.filter(function (t) { return t.jobs.indexOf(id) > -1; })
+      .sort(function (a, b) { return (b.stars || 0) - (a.stars || 0); })
+      .slice(0, 3)
+      .map(function (t) { return t.name; })
+      .join(" · ");
+  }
+
   function renderJobs() {
     jobsEl.innerHTML = JOBS.map(function (j, i) {
       var n = String(i + 1).padStart(2, "0");
+      var on = state.job === j.id;
       return '<button class="job" type="button" data-job="' + j.id + '"' +
-        (state.job === j.id ? ' aria-current="true"' : "") + ">" +
+        ' aria-pressed="' + (on ? "true" : "false") + '"' +
+        (on ? ' aria-current="true"' : "") + ">" +
         '<span class="job__n">' + n + "</span>" +
         '<span class="job__t">' + esc(j.title) + "</span>" +
         '<span class="job__b">' + esc(j.blurb) + "</span>" +
+        '<span class="job__tools">' + esc(samples(j.id)) + "</span>" +
         '<span class="job__c">' + jobCount(j.id) + " tools</span>" +
         "</button>";
     }).join("");
@@ -247,7 +272,7 @@
   var browseTitle = document.getElementById("browseTitle");
   var indexHead = document.getElementById("indexHead");
 
-  function toolRow(t) {
+  function toolRow(t, toks) {
     var h = health(t);
     var flags = [];
     if (t.archived) flags.push('<span class="flag flag--warn">Repository archived</span>');
@@ -263,9 +288,9 @@
     return '<li class="tool" data-health="' + h.band + '">' +
       '<div class="tool__body">' +
         '<h3 class="tool__name"><a href="' + esc(t.url) + '" target="_blank" rel="noopener">' +
-          esc(t.name) + "</a></h3>" +
-        '<p class="tool__tag">' + esc(t.tagline) + "</p>" +
-        '<p class="tool__note"><span>Trade-off</span>' + esc(t.note) + "</p>" +
+          highlight(t.name, toks) + "</a></h3>" +
+        '<p class="tool__tag">' + highlight(t.tagline, toks) + "</p>" +
+        '<p class="tool__note"><span>Trade-off</span>' + highlight(t.note, toks) + "</p>" +
         (flags.length ? '<div class="tool__flags">' + flags.join("") + "</div>" : "") +
       "</div>" +
       '<dl class="tool__meta">' +
@@ -278,6 +303,18 @@
         "<div><dt>Type</dt><dd>" + esc(KIND[t.kind] || t.kind) + "</dd></div>" +
       "</dl>" +
       "</li>";
+  }
+
+  var SUGGESTIONS = ["email", "auth", "database", "search", "payments",
+                     "open source", "self-hostable"];
+
+  function renderSuggestions() {
+    var row = document.getElementById("suggestRow");
+    if (!row) return;
+    row.innerHTML = SUGGESTIONS.map(function (s) {
+      return '<button class="suggest" type="button" data-suggest="' +
+        esc(s) + '">' + esc(s) + "</button>";
+    }).join("");
   }
 
   function describe() {
@@ -308,8 +345,10 @@
     }
 
     var rows = select();
-    toolsEl.innerHTML = rows.map(function (r) { return toolRow(r.t); }).join("");
+    var toks = tokens(state.q);
+    toolsEl.innerHTML = rows.map(function (r) { return toolRow(r.t, toks); }).join("");
     emptyEl.hidden = rows.length > 0;
+    if (!rows.length) renderSuggestions();
 
     var total = TOOLS.length;
     countEl.innerHTML = "<b>" + rows.length + "</b> of " + total +
@@ -368,6 +407,30 @@
     apply();
   });
 
+  document.addEventListener("click", function (e) {
+    var s = e.target.closest("[data-suggest]");
+    if (!s) return;
+    state.q = s.getAttribute("data-suggest");
+    input.value = state.q;
+    apply();
+  });
+
+  var shareBtn = document.getElementById("share");
+  if (shareBtn) {
+    shareBtn.addEventListener("click", function () {
+      var url = location.href;
+      var done = function () {
+        shareBtn.textContent = "Copied";
+        setTimeout(function () { shareBtn.textContent = "Copy link"; }, 1500);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(done, function () { window.prompt("Copy this link", url); });
+      } else {
+        window.prompt("Copy this link", url);
+      }
+    });
+  }
+
   document.getElementById("clear").addEventListener("click", function () {
     state.q = "";
     state.job = "";
@@ -407,6 +470,7 @@
   setText("statRepos", withRepo);
   setText("statDate", fmtDate(CHECKED));
   setText("indexMeta", TOOLS.length + " tools across " + JOBS.length + " jobs");
+  setText("coloDate", fmtDate(CHECKED));
   document.getElementById("footData").textContent =
     withRepo + " of " + TOOLS.length + " entries carry metadata read from the GitHub API on " +
     fmtDate(CHECKED) + ". Counts are as published on that date.";
