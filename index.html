@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Toolscout — find developer tools by the job, not the name</title>
 <meta name="description" content="A task-first index of 117 developer tools across 17 jobs. Every entry carries a maintenance signal read from its repository, not a vanity star count.">
-<meta name="theme-color" content="#f4f0e7">
+<meta name="theme-color" content="#f6efdf">
 <meta property="og:title" content="Toolscout — find developer tools by the job, not the name">
 <meta property="og:description" content="Directories are alphabetical. This one is ordered by what you are trying to do.">
 <meta property="og:type" content="website">
-<link rel="preload" href="fonts/fraunces-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/inter-tight-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/bricolage.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/source-serif.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fonts.css">
 <link rel="stylesheet" href="styles.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2315181b'/%3E%3Cpath d='M9 23 L16 9 L23 23' stroke='%23f4f0e7' stroke-width='2.4' fill='none'/%3E%3Cpath d='M16 9 L23 23' stroke='%23c25a33' stroke-width='2.4'/%3E%3C/svg%3E">
@@ -35,10 +35,14 @@
 
 <main>
   <section class="hero">
-    <div class="shell">
-      <p class="eyebrow">A task-first index of developer tools</p>
-      <h1 class="hero__title">Start with the job.<br><em>The tool is the easy part.</em></h1>
+    <div class="shell hero__inner">
+      <p class="eyebrow hero__kicker">A task-first index of developer tools</p>
+      <h1 class="hero__title">
+        <span class="reg" data-ink="Start with the job.">Start with the job.</span>
+        <span class="reg reg--blue" data-ink="The tool is the easy part.">The tool is the easy part.</span>
+      </h1>
       <p class="hero__lede">Directories are alphabetical, so you need the name before you can find it. This one is ordered by what you are trying to do — and every entry carries a maintenance signal read from its repository, not a vanity star count.</p>
+      <p class="inks"><span>Three inks, one press</span><i></i><i></i><i></i></p>
 
       <form class="need" id="need" role="search" autocomplete="off">
         <label class="sr" for="q">Describe what you need</label>
@@ -109,7 +113,7 @@
         </div>
       </div>
 
-      <h3 class="section-title" style="font-size:1.15rem;margin-top:2.2rem">Before you install anything</h3>
+      <h3 class="method__sub">Before you install anything</h3>
       <ol class="checks">
         <li><b>Read the last commit and the last release.</b> Commits this month plus a release this quarter is alive. An eighteen-month-old release is a risk you are choosing to take.</li>
         <li><b>Treat stars as an order of magnitude.</b> 40,000 against 400 is real information. 12,000 against 9,000 is noise.</li>

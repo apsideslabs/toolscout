@@ -25,6 +25,8 @@ Most directories are alphabetical, which means you need the name before you can 
 
 **No paid placement.** Nothing is ranked by who paid. Order comes from your query, from recency, or from stars.
 
+**Printed, not templated.** The interface is built as a three-ink risograph: black, federal blue and fluorescent pink on uncoated cream stock. Where two inks overlap they multiply into a third colour, headlines carry a misregistered second plate, and an SVG `feTurbulence` grain sits over the whole page. There are no gradients and no blurred shadows anywhere — depth comes from overprint, halftone, hard offset shadows and paper texture. Motion is native CSS `animation-timeline: view()`, so there is no animation library to load.
+
 **Searchable by constraint.** Free tier, open source, self-hostable, active, library, service, app, CLI — stackable, and encoded in the URL so a filtered view is a shareable link.
 
 ---
@@ -38,7 +40,7 @@ app.js              filtering, ranking, rendering — ~350 lines, no dependencie
 fonts.css           @font-face declarations for the self-hosted fonts
 data/tools.js       generated catalogue (window.TOOLSCOUT)
 scripts/build_data.py   the catalogue source + GitHub metadata fetch
-fonts/              four variable WOFF2 files, OFL 1.1
+fonts/              five WOFF2 files, OFL 1.1 (see fonts/OFL.txt)
 ```
 
 There is no build step and no framework. GitHub Pages serves these files directly. The only generated artefact is `data/tools.js`.

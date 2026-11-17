@@ -5,15 +5,16 @@ This site self-hosts three typefaces so that it loads no third-party
 requests. All three are licensed under the SIL Open Font License,
 Version 1.1.
 
-  Fraunces        Copyright 2018 The Fraunces Project Authors
-                  https://github.com/undercasetype/Fraunces
-  Inter Tight     Copyright (c) 2016 The Inter Project Authors
-                  https://github.com/rsms/inter
-  JetBrains Mono  Copyright 2020 The JetBrains Mono Project Authors
-                  https://github.com/JetBrains/JetBrainsMono
+  Bricolage Grotesque   Copyright 2022 The Bricolage Grotesque Project Authors
+                        https://github.com/ateliertriay/bricolage
+  Source Serif 4        Copyright 2014 The Source Serif 4 Project Authors
+                        https://github.com/adobe-fonts/source-serif
+  DM Mono               Copyright 2020 The DM Mono Project Authors
+                        https://github.com/googlefonts/dm-mono
 
-The files in this directory are the latin-subset variable WOFF2 builds
-served by the Google Fonts API, unmodified.
+The files in this directory are the latin-subset WOFF2 builds served by
+the Google Fonts API, unmodified. Variable families are shipped as one
+file per family and style; DM Mono is static, so it ships two weights.
 
 ----------------------------------------------------------------------
 

@@ -258,9 +258,7 @@
     var costLabel = t.cost === "free" ? "Free / OSS"
       : t.cost === "freemium" ? "Freemium" : "Paid";
 
-    var healthClass = h.band === "fresh" ? "is-healthy"
-      : h.band === "slowing" ? "is-slowing"
-      : h.band === "dead" ? "is-dead" : "is-muted";
+    var stampBand = h.band === "stale" ? "muted" : h.band;
 
     return '<li class="tool" data-health="' + h.band + '">' +
       '<div class="tool__body">' +
@@ -275,7 +273,8 @@
         "<div><dt>Cost</dt><dd>" + esc(costLabel) + "</dd></div>" +
         "<div><dt>Updated</dt><dd>" + esc(fmtDate(t.pushed)) + "</dd></div>" +
         "<div><dt>Stars</dt><dd>" + esc(fmtStars(t.stars)) + "</dd></div>" +
-        "<div><dt>Signal</dt><dd class=\"" + healthClass + '">' + esc(h.label) + "</dd></div>" +
+        "<div><dt>Signal</dt><dd><span class=\"stamp stamp--" + stampBand + "\">" +
+          esc(h.label) + "</span></dd></div>" +
         "<div><dt>Type</dt><dd>" + esc(KIND[t.kind] || t.kind) + "</dd></div>" +
       "</dl>" +
       "</li>";
