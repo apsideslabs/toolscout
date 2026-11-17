@@ -4,10 +4,13 @@ Run:  python3 scripts/build_data.py
 Requires: gh CLI authenticated (uses `gh api graphql`).
 """
 import json
+import os
 import subprocess
-import datetime
+from datetime import date, timezone, datetime as _dt
 
-CHECKED = "2026-11-17"
+# Stamped automatically so a scheduled refresh never claims an old check date.
+# Override with TOOLSCOUT_CHECKED=YYYY-MM-DD when rebuilding a historical snapshot.
+CHECKED = os.environ.get("TOOLSCOUT_CHECKED") or date.today().isoformat()
 
 JOBS = [
     ("frontend", "Build the interface", "Ship a usable UI without inventing a build pipeline."),

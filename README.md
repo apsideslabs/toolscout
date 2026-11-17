@@ -92,7 +92,15 @@ The script batches up to 40 repositories per GraphQL query, so the whole catalog
 
 ## Refreshing the metadata
 
-Star counts and push dates age. Rerun `build_data.py` monthly, commit the regenerated `data/tools.js`, and update `CHECKED` at the top of the script so the interface reports the new check date honestly. Nothing on the page claims to be live — it claims to be *checked on a date*, and the date is visible in the header and footer.
+Star counts, licences and push dates age, so `.github/workflows/refresh-data.yml` reruns the build at 06:00 UTC on the first of every month and commits `data/tools.js` only if something actually moved. Run it by hand from **Actions → Refresh catalogue metadata → Run workflow**.
+
+The check date is stamped automatically from the system clock (`date.today()`), so a scheduled run can never claim an old one. To rebuild a historical snapshot instead:
+
+```bash
+TOOLSCOUT_CHECKED=2026-11-17 python3 scripts/build_data.py
+```
+
+Nothing on the page claims to be live — it claims to be *checked on a date*, and that date is visible in the header and footer. If the workflow is ever disabled, the site keeps working and simply reports the date of the last real check.
 
 ---
 
