@@ -397,6 +397,16 @@
   document.getElementById("mastheadNote").textContent =
     TOOLS.length + " tools · " + JOBS.length + " jobs · " +
     withRepo + " with live repo data · checked " + fmtDate(CHECKED);
+
+  var setText = function (id, v) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = v;
+  };
+  setText("statTools", TOOLS.length);
+  setText("statJobs", JOBS.length);
+  setText("statRepos", withRepo);
+  setText("statDate", fmtDate(CHECKED));
+  setText("indexMeta", TOOLS.length + " tools across " + JOBS.length + " jobs");
   document.getElementById("footData").textContent =
     withRepo + " of " + TOOLS.length + " entries carry metadata read from the GitHub API on " +
     fmtDate(CHECKED) + ". Counts are as published on that date.";

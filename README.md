@@ -25,7 +25,7 @@ Most directories are alphabetical, which means you need the name before you can 
 
 **No paid placement.** Nothing is ranked by who paid. Order comes from your query, from recency, or from stars.
 
-**Printed, not templated.** The interface is built as a three-ink risograph: black, federal blue and fluorescent pink on uncoated cream stock. Where two inks overlap they multiply into a third colour, headlines carry a misregistered second plate, and an SVG `feTurbulence` grain sits over the whole page. There are no gradients and no blurred shadows anywhere — depth comes from overprint, halftone, hard offset shadows and paper texture. Motion is native CSS `animation-timeline: view()`, so there is no animation library to load.
+**Built to a system, not a template.** Warm paper field, near-black ink, deep pine for structure, one vermilion for action, gold used maybe five times on the whole page — the 60/30/10 discipline the rest of the studio works to. Newsreader carries the editorial voice, Instrument Sans the interface, JetBrains Mono every label and number. Depth is soft and layered: 1px hairlines, 8–22px radii, four shadow steps, one gradient panel. No flat slabs, no hard-edged boxes, no animation library.
 
 **Searchable by constraint.** Free tier, open source, self-hostable, active, library, service, app, CLI — stackable, and encoded in the URL so a filtered view is a shareable link.
 

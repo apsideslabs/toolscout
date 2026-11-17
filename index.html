@@ -5,15 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Toolscout — find developer tools by the job, not the name</title>
 <meta name="description" content="A task-first index of 117 developer tools across 17 jobs. Every entry carries a maintenance signal read from its repository, not a vanity star count.">
-<meta name="theme-color" content="#f6efdf">
+<meta name="theme-color" content="#fbf9f3">
 <meta property="og:title" content="Toolscout — find developer tools by the job, not the name">
 <meta property="og:description" content="Directories are alphabetical. This one is ordered by what you are trying to do.">
 <meta property="og:type" content="website">
-<link rel="preload" href="fonts/bricolage.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/source-serif.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/newsreader.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/instrument-sans.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fonts.css">
 <link rel="stylesheet" href="styles.css">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2315181b'/%3E%3Cpath d='M9 23 L16 9 L23 23' stroke='%23f4f0e7' stroke-width='2.4' fill='none'/%3E%3Cpath d='M16 9 L23 23' stroke='%23c25a33' stroke-width='2.4'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2312332f'/%3E%3Ccircle cx='16' cy='16' r='6.5' fill='none' stroke='%23fbf9f3' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='2.2' fill='%23d5a03c'/%3E%3C/svg%3E">
 </head>
 <body>
 <a class="skip-link" href="#index">Skip to the index</a>
@@ -35,31 +35,47 @@
 
 <main>
   <section class="hero">
-    <div class="shell hero__inner">
-      <p class="eyebrow hero__kicker">A task-first index of developer tools</p>
-      <h1 class="hero__title">
-        <span class="reg" data-ink="Start with the job.">Start with the job.</span>
-        <span class="reg reg--blue" data-ink="The tool is the easy part.">The tool is the easy part.</span>
-      </h1>
-      <p class="hero__lede">Directories are alphabetical, so you need the name before you can find it. This one is ordered by what you are trying to do — and every entry carries a maintenance signal read from its repository, not a vanity star count.</p>
-      <p class="inks"><span>Three inks, one press</span><i></i><i></i><i></i></p>
+    <div class="shell hero__grid">
+      <div class="hero__main">
+        <p class="eyebrow"><span class="dot" aria-hidden="true"></span>A task-first index of developer tools</p>
+        <h1 class="hero__title">Start with the job.<br><em>The tool is the easy part.</em></h1>
+        <p class="hero__lede">Directories are alphabetical, so you need the name before you can find it. This one is ordered by what you are trying to do — and every entry carries a maintenance signal read from its repository, not a vanity star count.</p>
 
-      <form class="need" id="need" role="search" autocomplete="off">
-        <label class="sr" for="q">Describe what you need</label>
-        <input class="need__input" id="q" name="q" type="search" spellcheck="false"
-               placeholder="send transactional email without a monthly minimum">
-        <button class="need__go" type="submit">Find tools</button>
-      </form>
-      <p class="need__hint" id="needHint">Type a task, not a product name. Press <b>/</b> to jump here.</p>
+        <form class="need" id="need" role="search" autocomplete="off">
+          <label class="sr" for="q">Describe what you need</label>
+          <input class="need__input" id="q" name="q" type="search" spellcheck="false"
+                 placeholder="send transactional email without a monthly minimum">
+          <span class="need__key" aria-hidden="true">/</span>
+          <button class="need__go" type="submit">Find tools</button>
+        </form>
+        <p class="need__hint" id="needHint">Type a task, not a product name. Press <b>/</b> to jump here.</p>
+      </div>
 
-      <div class="facets" id="facets" role="group" aria-label="Constraints"></div>
+      <aside class="ledger" aria-label="Catalogue at a glance">
+        <div class="ledger__head">
+          <span class="ledger__label">The index</span>
+          <span class="ledger__stamp">live data</span>
+        </div>
+        <dl class="ledger__grid">
+          <div><dt>Tools</dt><dd id="statTools">—</dd></div>
+          <div><dt>Jobs</dt><dd id="statJobs">—</dd></div>
+          <div><dt>Verified repos</dt><dd id="statRepos">—</dd></div>
+          <div><dt>Checked</dt><dd id="statDate" class="ledger__date">—</dd></div>
+        </dl>
+        <p class="ledger__foot"><span class="dot dot--gold" aria-hidden="true"></span>No paid placement. Order follows your query, recency, or stars.</p>
+      </aside>
     </div>
   </section>
 
   <section class="index" id="index">
     <div class="shell">
+      <div class="facets" id="facets" role="group" aria-label="Constraints"></div>
+
       <div class="index__head" id="indexHead">
-        <h2 class="section-title" id="browseTitle">Browse by job</h2>
+        <div>
+          <p class="eyebrow"><span class="dot" aria-hidden="true"></span>Browse</p>
+          <h2 class="section-title" id="browseTitle">Seventeen jobs</h2>
+        </div>
         <p class="index__meta" id="indexMeta"></p>
       </div>
 
@@ -87,64 +103,69 @@
 
   <section class="method" id="method">
     <div class="shell">
-      <h2 class="section-title">How an entry gets here, and what the numbers mean</h2>
-      <p class="method__lede">A directory is a catalogue, not a trust check. So this one shows its working: where each fact came from, what the health bands actually measure, and what the index deliberately refuses to claim.</p>
+      <div class="method__panel">
+        <p class="eyebrow eyebrow--light"><span class="dot dot--gold" aria-hidden="true"></span>Method</p>
+        <h2 class="section-title section-title--light">How an entry gets here, and what the numbers mean</h2>
+        <p class="method__lede">A directory is a catalogue, not a trust check. So this one shows its working: where each fact came from, what the health bands actually measure, and what the index deliberately refuses to claim.</p>
 
-      <div class="method__grid">
-        <div class="method__cell">
-          <span class="method__n">01</span>
-          <h3 class="method__h">Chosen by job, not by category</h3>
-          <p class="method__p">Every entry earns its place by solving a specific problem a developer has. A tool can sit under several jobs — Postgres is both a database and a search option.</p>
+        <div class="method__grid">
+          <div class="method__cell">
+            <span class="method__n">01</span>
+            <h3 class="method__h">Chosen by job, not by category</h3>
+            <p class="method__p">Every entry earns its place by solving a specific problem a developer has. A tool can sit under several jobs — Postgres is both a database and a search option.</p>
+          </div>
+          <div class="method__cell">
+            <span class="method__n">02</span>
+            <h3 class="method__h">Health comes from the repository</h3>
+            <p class="method__p">Where a project lives on GitHub, its last push, licence, language and stars are read from the GitHub API at build time. “Updated” is the last push to the default branch.</p>
+          </div>
+          <div class="method__cell">
+            <span class="method__n">03</span>
+            <h3 class="method__h">Four bands, one green light</h3>
+            <p class="method__p">Fresh is a push within 30 days, slowing within a year, stale beyond that. Archived means the maintainer closed the repository. Only fresh is a green light.</p>
+          </div>
+          <div class="method__cell">
+            <span class="method__n">04</span>
+            <h3 class="method__h">No paid placement, ever</h3>
+            <p class="method__p">Nothing here is ranked by who paid. Order is by your query, by recency, or by stars — and a listing still never proves a tool is safe or maintained.</p>
+          </div>
         </div>
-        <div class="method__cell">
-          <span class="method__n">02</span>
-          <h3 class="method__h">Health comes from the repository</h3>
-          <p class="method__p">Where a project lives on GitHub, its last push, licence, language and stars are read from the GitHub API at build time. “Updated” is the last push to the default branch.</p>
-        </div>
-        <div class="method__cell">
-          <span class="method__n">03</span>
-          <h3 class="method__h">Four bands, one green light</h3>
-          <p class="method__p">Fresh is a push within 30 days, slowing within a year, stale beyond that. Archived means the maintainer closed the repository. Only fresh is a green light.</p>
-        </div>
-        <div class="method__cell">
-          <span class="method__n">04</span>
-          <h3 class="method__h">No paid placement, ever</h3>
-          <p class="method__p">Nothing here is ranked by who paid. Order is by your query, by recency, or by stars — and a listing still never proves a tool is safe or maintained.</p>
-        </div>
+
+        <h3 class="method__sub">Before you install anything</h3>
+        <ol class="checks">
+          <li><b>Read the last commit and the last release.</b> Commits this month plus a release this quarter is alive. An eighteen-month-old release is a risk you are choosing to take.</li>
+          <li><b>Treat stars as an order of magnitude.</b> 40,000 against 400 is real information. 12,000 against 9,000 is noise.</li>
+          <li><b>Check the licence, and any recent change to it.</b> A move from an open licence to source-available is a commercial pivot, and the free tier becomes a business decision.</li>
+          <li><b>Look for a Docker image and a Compose file.</b> They signal that upgrades, persistent data and reverse proxies have been thought about.</li>
+          <li><b>Read the open issues, not the README.</b> Sort by most-commented. It shows what actually hurts, and whether maintainers answer.</li>
+        </ol>
       </div>
-
-      <h3 class="method__sub">Before you install anything</h3>
-      <ol class="checks">
-        <li><b>Read the last commit and the last release.</b> Commits this month plus a release this quarter is alive. An eighteen-month-old release is a risk you are choosing to take.</li>
-        <li><b>Treat stars as an order of magnitude.</b> 40,000 against 400 is real information. 12,000 against 9,000 is noise.</li>
-        <li><b>Check the licence, and any recent change to it.</b> A move from an open licence to source-available is a commercial pivot, and the free tier becomes a business decision.</li>
-        <li><b>Look for a Docker image and a Compose file.</b> They signal that upgrades, persistent data and reverse proxies have been thought about.</li>
-        <li><b>Read the open issues, not the README.</b> Sort by most-commented. It shows what actually hurts, and whether maintainers answer.</li>
-      </ol>
     </div>
   </section>
 </main>
 
 <footer class="foot">
-  <div class="shell foot__grid">
-    <div>
-      <p class="foot__word">Toolscout</p>
-      <p>An index of developer tools, ordered by the job you are trying to do.</p>
-    </div>
-    <div>
-      <h3>Data</h3>
-      <p id="footData"></p>
-      <p>Refresh with <code>python3 scripts/build_data.py</code>.</p>
-    </div>
-    <div>
-      <h3>Elsewhere</h3>
-      <p><a href="https://github.com/apsideslabs/toolscout" rel="noopener">Source on GitHub</a></p>
-      <p><a href="https://github.com/apsideslabs/toolscout/issues" rel="noopener">Report a wrong entry</a></p>
-      <p><a href="https://github.com/apsideslabs/toolscout/blob/main/LICENSE" rel="noopener">MIT licence</a></p>
-    </div>
-    <div>
-      <h3>Built with</h3>
-      <p>HTML, CSS and one script. No framework, no build step, no tracking.</p>
+  <div class="shell">
+    <div class="foot__top">
+      <div>
+        <p class="foot__word">Toolscout</p>
+        <p>An index of developer tools, ordered by the job you are trying to do.</p>
+      </div>
+      <div>
+        <h3>Data</h3>
+        <p id="footData"></p>
+        <p>Refresh with <code>python3 scripts/build_data.py</code>.</p>
+      </div>
+      <div>
+        <h3>Elsewhere</h3>
+        <p><a href="https://github.com/apsideslabs/toolscout" rel="noopener">Source on GitHub</a></p>
+        <p><a href="https://github.com/apsideslabs/toolscout/issues" rel="noopener">Report a wrong entry</a></p>
+        <p><a href="https://github.com/apsideslabs/toolscout/blob/main/LICENSE" rel="noopener">MIT licence</a></p>
+      </div>
+      <div>
+        <h3>Built with</h3>
+        <p>HTML, CSS and one script. No framework, no build step, no tracking.</p>
+      </div>
     </div>
   </div>
 </footer>
