@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="site.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23161616'/%3E%3Cpath d='M8 8h16v16H8z' fill='none' stroke='%23f4f4f4' stroke-width='2'/%3E%3Cpath d='M8 16h16M16 8v16' stroke='%230f62fe' stroke-width='2'/%3E%3C/svg%3E">
 </head>
-<body class="cds--white">
+<body class="cds--g100">
 
 <a class="skip-link" href="#index">Skip to the index</a>
 
@@ -32,7 +32,8 @@
 
 <main>
   <section class="hero">
-    <div class="shell">
+    <div class="shell hero__grid">
+      <div class="hero__main">
       <p class="cds--label hero__label">A task-first index of developer tools</p>
       <h1 class="hero__title">Start with the job.<br><span>The tool is the easy part.</span></h1>
       <p class="hero__lede">Directories are alphabetical, so you need the name before you can find it. This one is ordered by what you are trying to do — and every entry carries a maintenance signal read from its repository, not a vanity star count.</p>
@@ -51,6 +52,12 @@
       <p class="hero__hint" id="needHint">Type a task, not a product name. Press <b>/</b> to jump here.</p>
 
       <div class="filters" id="facets" role="group" aria-label="Constraints"></div>
+      </div>
+
+      <aside class="matrix-wrap" aria-label="Every tool in the catalogue">
+        <div class="matrix" id="matrix"></div>
+        <p class="matrix__caption" id="matrixCaption">One square per tool, coloured by job</p>
+      </aside>
     </div>
   </section>
 

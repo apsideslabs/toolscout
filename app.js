@@ -21,6 +21,15 @@
   var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
                 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
+  var PALETTE = ["blue", "purple", "teal", "magenta", "red", "green",
+                 "cyan", "cool-gray", "blue", "purple", "teal", "magenta",
+                 "red", "green", "cyan", "cool-gray", "blue"];
+
+  var JOB_COLOR = {};
+  JOBS.forEach(function (j, i) {
+    JOB_COLOR[j.id] = "var(--cds-tag-color-" + PALETTE[i % PALETTE.length] + ")";
+  });
+
   var JOB_BY_ID = {};
   JOBS.forEach(function (j) { JOB_BY_ID[j.id] = j; });
 
@@ -253,6 +262,7 @@
       var on = state.job === j.id;
       return '<button class="job" type="button" data-job="' + j.id + '"' +
         ' aria-pressed="' + (on ? "true" : "false") + '"' +
+        ' style="--job-c:' + JOB_COLOR[j.id] + '"' +
         (on ? ' aria-current="true"' : "") + ">" +
         '<span class="job__n">' + n + "</span>" +
         '<span class="job__t">' + esc(j.title) + "</span>" +
@@ -343,6 +353,7 @@
       countEl.textContent = "";
       toolsEl.innerHTML = "";
       emptyEl.hidden = true;
+      paintMatrix(null);
       return;
     }
 
@@ -351,6 +362,7 @@
     toolsEl.innerHTML = rows.map(function (r) { return toolRow(r.t, toks); }).join("");
     emptyEl.hidden = rows.length > 0;
     if (!rows.length) renderSuggestions();
+    paintMatrix(rows.map(function (r) { return r.t; }));
 
     var total = TOOLS.length;
     countEl.innerHTML = "<b>" + rows.length + "</b> of " + total +
@@ -456,6 +468,45 @@
     }
   });
 
+  /* ---------------------------------------------------------- matrix */
+
+  var matrixEl = document.getElementById("matrix");
+  var matrixCaption = document.getElementById("matrixCaption");
+  var matrixDots = [];
+
+  function renderMatrix() {
+    if (!matrixEl) return;
+    matrixEl.innerHTML = TOOLS.map(function (t) {
+      return '<span data-tool="' + esc(t.id) + '" style="--c:' +
+        (JOB_COLOR[t.jobs[0]] || "var(--cds-border-subtle-01)") + '" title="' +
+        esc(t.name + " — " + (JOB_BY_ID[t.jobs[0]] ? JOB_BY_ID[t.jobs[0]].title : t.jobs[0])) +
+        '"></span>';
+    }).join("");
+    matrixDots = Array.prototype.slice.call(matrixEl.children);
+  }
+
+  function paintMatrix(matches) {
+    if (!matrixDots.length) return;
+    var on = matches ? new Set(matches.map(function (t) { return t.id; })) : null;
+    matrixDots.forEach(function (d) {
+      var id = d.getAttribute("data-tool");
+      if (!on) {
+        d.classList.remove("is-dim", "is-match");
+      } else if (on.has(id)) {
+        d.classList.remove("is-dim");
+        d.classList.add("is-match");
+      } else {
+        d.classList.remove("is-match");
+        d.classList.add("is-dim");
+      }
+    });
+    if (matrixCaption) {
+      matrixCaption.textContent = on
+        ? matches.length + " of " + TOOLS.length + " tools match"
+        : "One square per tool, coloured by job";
+    }
+  }
+
   /* ------------------------------------------------------- accordion */
 
   document.querySelectorAll(".cds--accordion__heading").forEach(function (btn) {
@@ -491,6 +542,8 @@
   if (window.matchMedia && window.matchMedia("(max-width: 560px)").matches) {
     input.placeholder = "what are you trying to do?";
   }
+
+  renderMatrix();
 
   readURL();
   input.value = state.q;
