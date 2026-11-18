@@ -11,6 +11,7 @@ Requires: gh CLI authenticated (uses `gh api graphql`).
 """
 import json
 import os
+import re
 import subprocess
 import time
 from datetime import date, timedelta
@@ -166,6 +167,25 @@ def is_junk(t):
     return any(w in blob for w in JUNK)
 
 
+EMOJI_RE = re.compile(
+    "["
+    "\U0001F300-\U0001FAFF"
+    "\U00002600-\U000027BF"
+    "\U0001F1E6-\U0001F1FF"
+    "\U00002190-\U000021FF"
+    "\U00002B00-\U00002BFF"
+    "\uFE0F\u200D"
+    "]+", flags=re.UNICODE)
+
+
+def clean(text):
+    """GitHub descriptions arrive with emoji and :shortcodes: in them."""
+    t = EMOJI_RE.sub("", text or "")
+    t = re.sub(r":[a-z0-9_+-]+:", "", t)          # :white_check_mark:
+    t = re.sub(r"\s{2,}", " ", t).strip(" -—·|")
+    return t.strip()
+
+
 def humanise(name):
     """rails-api -> Rails API, next.js -> Next.js"""
     parts = name.replace("_", "-").split("-")
@@ -183,6 +203,46 @@ def humanise(name):
 
 
 CACHE = os.path.join(ROOT, "..", "discovered.json")
+
+
+def verify_outliers(tools, threshold=100000, ratio=0.02):
+    """Very high star counts are cross-checked against fork counts.
+
+    Star farms accumulate stars without contributors: real projects at this
+    scale are forked at roughly 10-20% of their star count.
+    """
+    suspects = [t for t in tools if (t.get("stars") or 0) >= threshold]
+    if not suspects:
+        return tools
+    print("checking %d outliers against fork counts" % len(suspects))
+
+    aliases = []
+    for i, t in enumerate(suspects):
+        owner, name = t["repo"].split("/", 1)
+        aliases.append('r%d: repository(owner: "%s", name: "%s") { forkCount stargazerCount }'
+                       % (i, owner, name))
+    q = "query { " + " ".join(aliases) + " }"
+
+    out = subprocess.run(["gh", "api", "graphql", "-f", "query=" + q],
+                         capture_output=True, text=True)
+    if out.returncode != 0:
+        print("  fork check failed, keeping all")
+        return tools
+    try:
+        data = (json.loads(out.stdout).get("data") or {})
+    except Exception:
+        return tools
+
+    drop = set()
+    for i, t in enumerate(suspects):
+        r = data.get("r%d" % i)
+        if not r:
+            continue
+        stars, forks = r.get("stargazerCount") or 0, r.get("forkCount") or 0
+        if stars and forks < stars * ratio:
+            drop.add(t["repo"])
+            print("  dropped %-34s %6d stars / %4d forks" % (t["repo"], stars, forks))
+    return [t for t in tools if t["repo"] not in drop]
 
 
 def main():
@@ -236,7 +296,7 @@ def main():
                     "name": humanise(n["name"]),
                     "repo": repo,
                     "url": n.get("homepageUrl") or n["url"],
-                    "tagline": (n["description"] or "").strip()[:160],
+                    "tagline": clean(n["description"])[:160],
                     "jobs": [job_id],
                     "kind": "library",
                     "cost": "free",
@@ -255,6 +315,7 @@ def main():
 
     json.dump(list(found.values()), open(CACHE, "w"))
     tools = [t for t in found.values() if not is_junk(t)]
+    tools = verify_outliers(tools)
     dropped = len(found) - len(tools)
     print("dropped as samples/docs/demos:", dropped)
     # ids must be unique across owners
@@ -286,7 +347,7 @@ def main():
         if u.startswith("http://"): u = "https://" + u[7:]
         elif not u.startswith("https://"): u = "https://" + u.lstrip("/")
         url = "" if u == repo_url else u
-        rows.append([t["id"], t["name"], t["repo"], url, t["tagline"],
+        rows.append([t["id"], t["name"], t["repo"], url, clean(t["tagline"]),
                      t["jobs"], t["licence"], t["stars"] or 0, t["pushed"],
                      t.get("lang") or "", t["detail"]])
 

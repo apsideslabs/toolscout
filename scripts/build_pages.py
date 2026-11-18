@@ -277,6 +277,7 @@ checks = [
     ("Pushed within twelve months.", "A tool that has not moved in a year is not maintained, whatever the README says."),
     ("Carries a licence.", "No licence means no legal right to use it. Those entries are dropped."),
     ("At least 400 stars.", "A floor for community validation, not a quality score."),
+    ("Outliers cross-checked against forks.", "Above 100,000 stars the fork count is checked too, because star farms accumulate stars without contributors. Real projects at that scale are forked at 10-20% of their star count."),
     ("Metadata read at build time.", "Stars, licence, language and last push come from the GitHub API, not from a directory listing."),
 ]
 body = """<section class="page-head">

@@ -91,8 +91,16 @@
         </form>
 
         <div class="filters" id="facets" role="group" aria-label="Constraints"></div>
+        <p class="hero__hint">Press <kbd>/</kbd> to search · <kbd>Esc</kbd> to clear</p>
       </div>
 
+      <aside class="panel" aria-label="Most starred entries">
+        <div class="panel__head">
+          <span class="panel__title">Most starred</span>
+          <a class="panel__more" href="#index">All jobs →</a>
+        </div>
+        <ol class="panel__list" id="topList"></ol>
+      </aside>
     </div>
   </section>
 
@@ -117,17 +125,6 @@
 
       <div class="jobs" id="jobs"></div>
 
-      <div class="block">
-        <div class="section-head">
-          <div>
-            <p class="label">Recently updated</p>
-            <h2 class="section-title">Moving this month</h2>
-          </div>
-          <p class="section-meta">last push, newest first</p>
-        </div>
-        <div class="recent" id="recentGrid"></div>
-      </div>
-
       <div class="results" id="results" hidden>
         <div class="results__bar">
           <p class="results__count" id="resultCount" aria-live="polite"></p>
@@ -145,12 +142,27 @@
             <button class="btn btn--sm btn--ghost" id="clear" type="button">Clear</button>
           </div>
         </div>
+        <div class="thead" aria-hidden="true">
+          <span>Tool</span><span>What it does</span><span>Licence · stars · signal</span>
+        </div>
         <ol class="tools" id="tools"></ol>
         <div id="empty" hidden>
           <p class="empty">Nothing matches. Try:</p>
           <div class="suggest-row" id="suggestRow"></div>
         </div>
       </div>
+
+      <div class="block">
+        <div class="section-head">
+          <div>
+            <p class="label">Recently updated</p>
+            <h2 class="section-title">Moving this month</h2>
+          </div>
+          <p class="section-meta">last push, newest first</p>
+        </div>
+        <div class="recent" id="recentGrid"></div>
+      </div>
+
     </div>
   </section>
   <section class="cta">
@@ -168,9 +180,28 @@
 </main>
 
 <footer class="foot">
-  <div class="shell foot__row">
-    <span id="footData"></span>
-    <span><a class="link" href="method.html">Method</a> · <a class="link" href="https://github.com/apsideslabs/toolscout">Source</a> · MIT</span>
+  <div class="shell foot__cols">
+    <div class="foot__brand">
+      <span class="foot__name"><span class="topbar__prefix">Tool</span>scout</span>
+      <p class="foot__blurb">An index of developer tools ordered by the job you are trying to do. Every entry is active, licensed and un-archived.</p>
+      <p class="foot__meta" id="footData"></p>
+    </div>
+    <nav class="foot__col" aria-label="Jobs">
+      <span class="foot__head">Jobs</span>
+      <a href="jobs/frontend.html">Build the interface</a>
+      <a href="jobs/auth.html">Add sign-in</a>
+      <a href="jobs/database.html">Store and query data</a>
+      <a href="jobs/deploy.html">Deploy</a>
+      <a href="jobs/observe.html">Observability</a>
+      <a href="jobs/ai.html">Add a model</a>
+    </nav>
+    <nav class="foot__col" aria-label="About">
+      <span class="foot__head">About</span>
+      <a href="method.html">How entries get in</a>
+      <a href="sitemap.xml">Sitemap</a>
+      <a href="https://github.com/apsideslabs/toolscout">Source</a>
+      <a href="https://github.com/apsideslabs/toolscout/blob/main/LICENSE">MIT licence</a>
+    </nav>
   </div>
 </footer>
 

@@ -386,7 +386,7 @@
       '<p class="tool__tag">' + highlight(t.tagline, toks) + "</p>" +
       '<dl class="tool__meta">' +
         "<div><dt>Licence</dt><dd>" + esc(fmtLicence(t.licence)) + "</dd></div>" +
-        "<div><dt>Updated</dt><dd>" + esc(fmtDate(t.pushed)) + "</dd></div>" +
+        "<div><dt>Stars</dt><dd>" + esc(fmtStars(t.stars)) + "</dd></div>" +
         "<div><dt>Signal</dt><dd><span class=\"stamp stamp--" + band + "\">" +
           esc(h.label) + "</span></dd></div>" +
       "</dl>" +
@@ -513,6 +513,15 @@
     });
   }
 
+  document.addEventListener("keydown", function (e) {
+    var tag = (e.target && e.target.tagName) || "";
+    if (e.key === "/" && tag !== "INPUT" && tag !== "TEXTAREA") {
+      e.preventDefault();
+      input.focus();
+      input.select();
+    }
+  });
+
   document.getElementById("clear").addEventListener("click", function () {
     state.q = "";
     state.job = "";
@@ -535,6 +544,31 @@
       input.blur();
     }
   });
+
+  /* ------------------------------------------------------ hero panel */
+
+  function renderTop() {
+    var el = document.getElementById("topList");
+    if (!el) return;
+    var top = TOOLS.slice().sort(function (a, b) {
+      return (b.stars || 0) - (a.stars || 0);
+    }).slice(0, 5);
+    var max = top.length ? (top[0].stars || 1) : 1;
+
+    el.innerHTML = top.map(function (t, i) {
+      var band = health(t).band;
+      var pct = Math.max(6, Math.round(((t.stars || 0) / max) * 100));
+      return '<li class="panel__row">' +
+        '<a class="panel__link" href="' + (t.detail ? "tools/" + esc(t.id) + ".html" : esc(t.url)) + '"' +
+          (t.detail ? "" : ' target="_blank" rel="noopener"') + ">" +
+          '<span class="panel__n">' + (i + 1) + "</span>" +
+          '<span class="panel__name">' + esc(t.name) + "</span>" +
+          '<span class="panel__stars">' + esc(fmtStars(t.stars)) + "</span>" +
+        "</a>" +
+        '<span class="panel__bar" data-band="' + band + '" style="--w:' + pct + '%"></span>' +
+        "</li>";
+    }).join("");
+  }
 
   /* -------------------------------------------------- recently updated */
 
@@ -586,6 +620,7 @@
   }
 
   renderRecent();
+  renderTop();
 
   readURL();
   input.value = state.q;
