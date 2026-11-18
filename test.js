@@ -90,12 +90,18 @@ const names = () => $$("#tools .tool__name").map((n) => n.textContent.trim());
   $("#clear").dispatchEvent(new window.MouseEvent("click", { bubbles: true }));
   ok(window.location.search === "", "url cleared");
 
+  console.log("navigation");
+  ok(!!$("#menuToggle"), "hamburger present");
+  ok(!!$("#drawer"), "drawer present");
+  ok($$("#drawer .drawer__link").length >= 17, "drawer lists every job");
+  ok(!!$("#drawerBackdrop"), "drawer backdrop present");
+  ok($$(".stats .stat").length === 4, "four stats in the band");
+
   console.log("matrix");
   ok($$("#matrix span").length === 117, "117 squares");
   await type("email");
   ok($$("#matrix span.is-match").length > 0, "matches highlighted");
   ok($$("#matrix span.is-dim").length > 0, "others dim");
-  ok(/match/.test($("#matrixCaption").textContent), "caption reports the count");
 
   console.log("empty state");
   await type("zzzqqq");

@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VS Code — Write and review code — Toolscout</title>
 <meta name="description" content="Editor with the largest extension ecosystem.">
-<meta name="theme-color" content="#161616">
+<meta name="theme-color" content="#1c1b27">
 <link rel="canonical" href="https://apsideslabs.github.io/toolscout/tools/vs-code.html">
-<link rel="preload" href="../fonts/ibm-plex-sans-normal-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/inter-normal-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../fonts.css">
 <link rel="stylesheet" href="../site.css">
 <link rel="icon" href="../assets/mark.svg">
@@ -16,6 +16,43 @@
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="topbar" role="banner">
   <div class="topbar__row">
+  <button class="menu-toggle" id="menuToggle" type="button"
+          aria-expanded="false" aria-controls="drawer" aria-label="Open menu">
+    <span class="menu-toggle__line"></span>
+    <span class="menu-toggle__line"></span>
+    <span class="menu-toggle__line"></span>
+  </button>
+  <div class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer__head">
+      <span class="drawer__title">Browse</span>
+      <button class="drawer__close" id="drawerClose" type="button" aria-label="Close menu">&#215;</button>
+    </div>
+    <nav class="drawer__nav" aria-label="All sections">
+      <a class="drawer__link drawer__link--top" href="../index.html">Index</a>
+      <p class="drawer__label">Jobs</p>
+      <a class="drawer__link" href="../jobs/frontend.html"><span class="drawer__n">01</span>Build the interface</a>
+<a class="drawer__link" href="../jobs/auth.html"><span class="drawer__n">02</span>Add sign-in and permissions</a>
+<a class="drawer__link" href="../jobs/database.html"><span class="drawer__n">03</span>Store and query data</a>
+<a class="drawer__link" href="../jobs/api.html"><span class="drawer__n">04</span>Build, document and test an API</a>
+<a class="drawer__link" href="../jobs/deploy.html"><span class="drawer__n">05</span>Get it running in production</a>
+<a class="drawer__link" href="../jobs/ci.html"><span class="drawer__n">06</span>Automate build and test</a>
+<a class="drawer__link" href="../jobs/observe.html"><span class="drawer__n">07</span>See what production is doing</a>
+<a class="drawer__link" href="../jobs/email.html"><span class="drawer__n">08</span>Send mail and notifications</a>
+<a class="drawer__link" href="../jobs/payments.html"><span class="drawer__n">09</span>Take money</a>
+<a class="drawer__link" href="../jobs/search.html"><span class="drawer__n">10</span>Make things findable</a>
+<a class="drawer__link" href="../jobs/files.html"><span class="drawer__n">11</span>Store and serve files</a>
+<a class="drawer__link" href="../jobs/ai.html"><span class="drawer__n">12</span>Add a model to the product</a>
+<a class="drawer__link" href="../jobs/automate.html"><span class="drawer__n">13</span>Glue services and run jobs</a>
+<a class="drawer__link" href="../jobs/docs.html"><span class="drawer__n">14</span>Write and publish documentation</a>
+<a class="drawer__link" href="../jobs/terminal.html"><span class="drawer__n">15</span>Move faster in the shell</a>
+<a class="drawer__link" href="../jobs/editor.html"><span class="drawer__n">16</span>Write and review code</a>
+<a class="drawer__link" href="../jobs/design.html"><span class="drawer__n">17</span>Design and prototype</a>
+      <p class="drawer__label">More</p>
+      <a class="drawer__link drawer__link--top" href="../method.html">Method</a>
+      <a class="drawer__link drawer__link--top" href="https://github.com/apsideslabs/toolscout">Source</a>
+    </nav>
+  </div>
+  <div class="drawer-backdrop" id="drawerBackdrop" hidden></div>
   <a class="topbar__name" href="../index.html"><span class="topbar__prefix">Tool</span>scout</a>
   <nav class="topbar__nav" aria-label="Sections">
     <ul class="topbar__menu">
@@ -57,7 +94,6 @@
 </section>
 <section class="shell section">
   <div class="matrix"><span class="is-dim" style="--c:var(--green)" title="act"></span><span class="is-dim" style="--c:var(--faint)" title="Algolia"></span><span class="is-dim" style="--c:var(--green)" title="Alpine.js"></span><span class="is-dim" style="--c:var(--faint)" title="Amazon SES"></span><span class="is-dim" style="--c:var(--faint)" title="Anthropic API"></span><span class="is-dim" style="--c:var(--green)" title="Astro"></span><span class="is-dim" style="--c:var(--green)" title="atuin"></span><span class="is-dim" style="--c:var(--blue)" title="Auth.js"></span><span class="is-dim" style="--c:var(--green)" title="bat"></span><span class="is-dim" style="--c:var(--green)" title="Better Auth"></span><span class="is-dim" style="--c:var(--green)" title="Biome"></span><span class="is-dim" style="--c:var(--green)" title="Bruno"></span><span class="is-dim" style="--c:var(--green)" title="Caddy"></span><span class="is-dim" style="--c:var(--faint)" title="Clerk"></span><span class="is-dim" style="--c:var(--green)" title="ClickHouse"></span><span class="is-dim" style="--c:var(--faint)" title="Cloudflare R2"></span><span class="is-dim" style="--c:var(--green)" title="Coolify"></span><span class="is-dim" style="--c:var(--faint)" title="Cursor"></span><span class="is-dim" style="--c:var(--green)" title="Dagger"></span><span class="is-dim" style="--c:var(--green)" title="Docker"></span><span class="is-dim" style="--c:var(--green)" title="Docusaurus"></span><span class="is-dim" style="--c:var(--green)" title="Dokku"></span><span class="is-dim" style="--c:var(--green)" title="Drizzle ORM"></span><span class="is-dim" style="--c:var(--green)" title="Excalidraw"></span><span class="is-dim" style="--c:var(--green)" title="FastAPI"></span><span class="is-dim" style="--c:var(--green)" title="fd"></span><span class="is-dim" style="--c:var(--faint)" title="Figma"></span><span class="is-dim" style="--c:var(--faint)" title="Fly.io"></span><span class="is-dim" style="--c:var(--green)" title="fzf"></span><span class="is-dim" style="--c:var(--faint)" title="GitHub Actions"></span><span class="is-dim" style="--c:var(--faint)" title="GitLab CI"></span><span class="is-dim" style="--c:var(--green)" title="Grafana"></span><span class="is-dim" style="--c:var(--green)" title="Hanko"></span><span class="is-dim" style="--c:var(--green)" title="Helix"></span><span class="is-dim" style="--c:var(--green)" title="Hono"></span><span class="is-dim" style="--c:var(--green)" title="Hoppscotch"></span><span class="is-dim" style="--c:var(--green)" title="htmx"></span><span class="is-dim" style="--c:var(--red)" title="HTTPie"></span><span class="is-dim" style="--c:var(--faint)" title="Hugging Face"></span><span class="is-dim" style="--c:var(--green)" title="Hyperswitch"></span><span class="is-dim" style="--c:var(--green)" title="Inngest"></span><span class="is-dim" style="--c:var(--green)" title="Kamal"></span><span class="is-dim" style="--c:var(--green)" title="Keycloak"></span><span class="is-dim" style="--c:var(--green)" title="Langfuse"></span><span class="is-dim" style="--c:var(--faint)" title="Lemon Squeezy"></span><span class="is-dim" style="--c:var(--green)" title="Listmonk"></span><span class="is-dim" style="--c:var(--green)" title="LiteLLM"></span><span class="is-dim" style="--c:var(--green)" title="Lucide"></span><span class="is-dim" style="--c:var(--green)" title="Mailpit"></span><span class="is-dim" style="--c:var(--green)" title="Meilisearch"></span><span class="is-dim" style="--c:var(--green)" title="Mermaid"></span><span class="is-dim" style="--c:var(--red)" title="MinIO"></span><span class="is-dim" style="--c:var(--faint)" title="Mintlify"></span><span class="is-dim" style="--c:var(--green)" title="MkDocs Material"></span><span class="is-dim" style="--c:var(--green)" title="MongoDB"></span><span class="is-dim" style="--c:var(--green)" title="n8n"></span><span class="is-dim" style="--c:var(--faint)" title="Neon"></span><span class="is-dim" style="--c:var(--green)" title="Neovim"></span><span class="is-dim" style="--c:var(--green)" title="Netdata"></span><span class="is-dim" style="--c:var(--green)" title="Next.js"></span><span class="is-dim" style="--c:var(--green)" title="Nodemailer"></span><span class="is-dim" style="--c:var(--green)" title="Nx"></span><span class="is-dim" style="--c:var(--green)" title="Ollama"></span><span class="is-dim" style="--c:var(--faint)" title="OpenAI API"></span><span class="is-dim" style="--c:var(--green)" title="OpenSearch"></span><span class="is-dim" style="--c:var(--green)" title="OpenTelemetry"></span><span class="is-dim" style="--c:var(--blue)" title="Ory Kratos"></span><span class="is-dim" style="--c:var(--faint)" title="Paddle"></span><span class="is-dim" style="--c:var(--green)" title="Penpot"></span><span class="is-dim" style="--c:var(--green)" title="pgvector"></span><span class="is-dim" style="--c:var(--green)" title="Polar"></span><span class="is-dim" style="--c:var(--green)" title="PostgreSQL"></span><span class="is-dim" style="--c:var(--faint)" title="Postmark"></span><span class="is-dim" style="--c:var(--green)" title="Prisma"></span><span class="is-dim" style="--c:var(--green)" title="Prometheus"></span><span class="is-dim" style="--c:var(--faint)" title="Railway"></span><span class="is-dim" style="--c:var(--faint)" title="Razorpay"></span><span class="is-dim" style="--c:var(--green)" title="React"></span><span class="is-dim" style="--c:var(--green)" title="React Email"></span><span class="is-dim" style="--c:var(--faint)" title="Render"></span><span class="is-dim" style="--c:var(--faint)" title="Resend"></span><span class="is-dim" style="--c:var(--green)" title="ripgrep"></span><span class="is-dim" style="--c:var(--green)" title="Scalar"></span><span class="is-dim" style="--c:var(--green)" title="Sentry"></span><span class="is-dim" style="--c:var(--green)" title="shadcn/ui"></span><span class="is-dim" style="--c:var(--green)" title="SigNoz"></span><span class="is-dim" style="--c:var(--green)" title="SQLite"></span><span class="is-dim" style="--c:var(--green)" title="Squoosh"></span><span class="is-dim" style="--c:var(--green)" title="Starlight"></span><span class="is-dim" style="--c:var(--green)" title="starship"></span><span class="is-dim" style="--c:var(--faint)" title="Stripe"></span><span class="is-dim" style="--c:var(--green)" title="Supabase Auth"></span><span class="is-dim" style="--c:var(--green)" title="Svelte"></span><span class="is-dim" style="--c:var(--green)" title="Tailwind CSS"></span><span class="is-dim" style="--c:var(--green)" title="Temporal"></span><span class="is-dim" style="--c:var(--green)" title="tmux"></span><span class="is-dim" style="--c:var(--green)" title="Trigger.dev"></span><span class="is-dim" style="--c:var(--green)" title="tRPC"></span><span class="is-dim" style="--c:var(--green)" title="Turborepo"></span><span class="is-dim" style="--c:var(--green)" title="Turso"></span><span class="is-dim" style="--c:var(--green)" title="tusd"></span><span class="is-dim" style="--c:var(--green)" title="Typesense"></span><span class="is-dim" style="--c:var(--blue)" title="UploadThing"></span><span class="is-dim" style="--c:var(--green)" title="Uppy"></span><span class="is-dim" style="--c:var(--green)" title="Uptime Kuma"></span><span class="is-dim" style="--c:var(--green)" title="Valkey"></span><span class="is-dim" style="--c:var(--faint)" title="Vercel"></span><span class="is-dim" style="--c:var(--green)" title="Vercel AI SDK"></span><span class="is-dim" style="--c:var(--green)" title="Vite"></span><span class="is-dim" style="--c:var(--green)" title="VitePress"></span><span class="is-match" style="--c:var(--green)" title="VS Code"></span><span class="is-dim" style="--c:var(--green)" title="Vue"></span><span class="is-dim" style="--c:var(--green)" title="Windmill"></span><span class="is-dim" style="--c:var(--faint)" title="WorkOS"></span><span class="is-dim" style="--c:var(--green)" title="Zed"></span><span class="is-dim" style="--c:var(--green)" title="Zod"></span><span class="is-dim" style="--c:var(--green)" title="zoxide"></span></div>
-<p class="matrix__caption">One of 117 tools</p>
 </section>
 <section class="shell section pager">
   <a class="link" href="vitepress.html">← VitePress</a>
@@ -67,8 +103,9 @@
 <footer class="foot">
   <div class="shell foot__row">
     <span>117 tools · 17 jobs · checked 17 Nov 2026</span>
-    <span><a class="link" href="../method.html">Method</a> · <a class="link" href="https://github.com/apsideslabs/toolscout">Source</a></span>
+    <span><a href="../method.html">Method</a> · <a href="https://github.com/apsideslabs/toolscout">Source</a></span>
   </div>
 </footer>
+<script src="../menu.js"></script>
 </body>
 </html>

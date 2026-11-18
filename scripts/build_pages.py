@@ -89,55 +89,91 @@ def matrix(active_ids, base, caption):
         dots.append('<span class="%s" style="--c:%s" title="%s"></span>'
                     % (lit.strip(), SIGNAL.get(health(t)[0], "var(--faint)"),
                        esc(t["name"])))
-    return ('<div class="matrix">%s</div>\n<p class="matrix__caption">%s</p>'
-            % ("".join(dots), esc(caption)))
+    return '<div class="matrix">%s</div>' % "".join(dots)
+
+
+DRAWER_JOBS = "\n".join(
+    '<a class="drawer__link" href="%sjobs/%s.html"><span class="drawer__n">%02d</span>%s</a>'
+    % ("{base}", j["id"], i + 1, j["title"]) for i, j in enumerate(JOBS))
 
 
 def shell(title, desc, base, body, canonical=""):
-    return """<!doctype html>
+    html = """<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>%s</title>
-<meta name="description" content="%s">
-<meta name="theme-color" content="#161616">
-%s
-<link rel="preload" href="%sfonts/ibm-plex-sans-normal-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="%sfonts.css">
-<link rel="stylesheet" href="%ssite.css">
-<link rel="icon" href="%sassets/mark.svg">
+<title>@TITLE@</title>
+<meta name="description" content="@DESC@">
+<meta name="theme-color" content="#1c1b27">
+@CANON@
+<link rel="preload" href="@BASE@fonts/inter-normal-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="@BASE@fonts.css">
+<link rel="stylesheet" href="@BASE@site.css">
+<link rel="icon" href="@BASE@assets/mark.svg">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="topbar" role="banner">
   <div class="topbar__row">
-  <a class="topbar__name" href="%sindex.html"><span class="topbar__prefix">Tool</span>scout</a>
+  <button class="menu-toggle" id="menuToggle" type="button"
+          aria-expanded="false" aria-controls="drawer" aria-label="Open menu">
+    <span class="menu-toggle__line"></span>
+    <span class="menu-toggle__line"></span>
+    <span class="menu-toggle__line"></span>
+  </button>
+  <div class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer__head">
+      <span class="drawer__title">Browse</span>
+      <button class="drawer__close" id="drawerClose" type="button" aria-label="Close menu">&#215;</button>
+    </div>
+    <nav class="drawer__nav" aria-label="All sections">
+      <a class="drawer__link drawer__link--top" href="@BASE@index.html">Index</a>
+      <p class="drawer__label">Jobs</p>
+      @DRAWER@
+      <p class="drawer__label">More</p>
+      <a class="drawer__link drawer__link--top" href="@BASE@method.html">Method</a>
+      <a class="drawer__link drawer__link--top" href="https://github.com/apsideslabs/toolscout">Source</a>
+    </nav>
+  </div>
+  <div class="drawer-backdrop" id="drawerBackdrop" hidden></div>
+  <a class="topbar__name" href="@BASE@index.html"><span class="topbar__prefix">Tool</span>scout</a>
   <nav class="topbar__nav" aria-label="Sections">
     <ul class="topbar__menu">
-      <li><a class="topbar__link" href="%sindex.html#index">Index</a></li>
-      <li><a class="topbar__link" href="%smethod.html">Method</a></li>
+      <li><a class="topbar__link" href="@BASE@index.html#index">Index</a></li>
+      <li><a class="topbar__link" href="@BASE@method.html">Method</a></li>
       <li><a class="topbar__link" href="https://github.com/apsideslabs/toolscout" rel="noopener">Source</a></li>
     </ul>
   </nav>
   </div>
 </header>
 <main id="main">
-%s
+@BODY@
 </main>
 <footer class="foot">
   <div class="shell foot__row">
-    <span>%d tools · %d jobs · checked %s</span>
-    <span><a class="link" href="%smethod.html">Method</a> · <a class="link" href="https://github.com/apsideslabs/toolscout">Source</a></span>
+    <span>@COUNT@ tools · @JOBS@ jobs · checked @CHECKED@</span>
+    <span><a href="@BASE@method.html">Method</a> · <a href="https://github.com/apsideslabs/toolscout">Source</a></span>
   </div>
 </footer>
+<script src="@BASE@menu.js"></script>
 </body>
 </html>
-""" % (esc(title), esc(desc),
-       ('<link rel="canonical" href="%s">' % canonical) if canonical else "",
-       base, base, base, base, base,
-       base, base,
-       body, len(TOOLS), len(JOBS), fmt_date(CHECKED), base)
+"""
+    canon = '<link rel="canonical" href="%s">' % canonical if canonical else ""
+    drawer = "\n".join(
+        '<a class="drawer__link" href="%sjobs/%s.html"><span class="drawer__n">%02d</span>%s</a>'
+        % (base, j["id"], i + 1, j["title"]) for i, j in enumerate(JOBS))
+    return (html
+            .replace("@TITLE@", esc(title))
+            .replace("@DESC@", esc(desc))
+            .replace("@CANON@", canon)
+            .replace("@BASE@", base)
+            .replace("@DRAWER@", drawer)
+            .replace("@BODY@", body)
+            .replace("@COUNT@", str(len(TOOLS)))
+            .replace("@JOBS@", str(len(JOBS)))
+            .replace("@CHECKED@", fmt_date(CHECKED)))
 
 
 def tool_row(t, base):
