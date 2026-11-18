@@ -21,6 +21,9 @@
     o.jobs = o.jobs || [];
     o.url = o.url || ("https://github.com/" + o.repo);
     o.detail = !!o.detail;
+    o.kind = o.kind || "library";
+    o.weight = o.weight || o.stars || 0;
+    o.pricing = o.pricing || "";
     return o;
   });
   var JOBS = DATA.jobs;
@@ -110,6 +113,7 @@
   }
 
   function health(t) {
+    if (t.kind === "platform") return { band: "platform", label: "Hosted" };
     if (t.archived) return { band: "dead", label: "Archived" };
     if (!t.pushed) return { band: "stale", label: "No repo" };
     var d = daysSince(t.pushed);
@@ -126,7 +130,8 @@
     { id: "ts",      label: "TypeScript", test: function (t) { return t.lang === "TypeScript"; } },
     { id: "py",      label: "Python",     test: function (t) { return t.lang === "Python"; } },
     { id: "go",      label: "Go",         test: function (t) { return t.lang === "Go"; } },
-    { id: "rust",    label: "Rust",       test: function (t) { return t.lang === "Rust"; } }
+    { id: "rust",    label: "Rust",       test: function (t) { return t.lang === "Rust"; } },
+    { id: "platform", label: "Hosted platform", test: function (t) { return t.kind === "platform"; } }
   ];
 
   var FACET_BY_ID = {};
@@ -276,8 +281,13 @@
     }
 
     /* popularity only breaks ties between real matches — never creates one */
-    if (total > 0 && t.stars) {
-      total += Math.min(10, Math.log(t.stars + 1) / Math.LN10 * 1.6);
+    /* for a "what should I use" query the hosted platform is usually the
+       answer; libraries are the do-it-yourself route */
+    if (t.kind === "platform" && total > 0) total += 14;
+
+    var pop = t.weight || t.stars || 0;
+    if (total > 0 && pop) {
+      total += Math.min(10, Math.log(pop + 1) / Math.LN10 * 1.6);
     }
     return { score: total, hits: hits };
   }
@@ -381,12 +391,13 @@
           (t.detail ? "tools/" + esc(t.id) + ".html" : esc(t.url)) + '"' +
           (t.detail ? "" : ' target="_blank" rel="noopener"') + ">" +
           highlight(t.name, toks) + "</a></h3>" +
-        '<span class="tool__kind">' + esc(KIND[t.kind] || t.kind) + "</span>" +
+        '<span class="tool__kind">' + esc(t.kind === "platform" ? "Platform" : (t.lang || "Library")) + "</span>" +
       "</div>" +
       '<p class="tool__tag">' + highlight(t.tagline, toks) + "</p>" +
       '<dl class="tool__meta">' +
         "<div><dt>Licence</dt><dd>" + esc(fmtLicence(t.licence)) + "</dd></div>" +
-        "<div><dt>Stars</dt><dd>" + esc(fmtStars(t.stars)) + "</dd></div>" +
+        "<div><dt>" + (t.kind === "platform" ? "Pricing" : "Stars") + "</dt><dd>" +
+          esc(t.kind === "platform" ? (t.pricing || "—") : fmtStars(t.stars)) + "</dd></div>" +
         "<div><dt>Signal</dt><dd><span class=\"stamp stamp--" + band + "\">" +
           esc(h.label) + "</span></dd></div>" +
       "</dl>" +

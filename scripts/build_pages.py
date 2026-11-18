@@ -23,6 +23,9 @@ def load():
         t["jobs"] = t["jobs"] or []
         t["url"] = t["url"] or ("https://github.com/" + t["repo"])
         t["detail"] = bool(t["detail"])
+        t["kind"] = t.get("kind") or "library"
+        t["weight"] = t.get("weight") or t.get("stars") or 0
+        t["pricing"] = t.get("pricing") or ""
         tools.append(t)
     return data["checked"], data["jobs"], tools
 
@@ -58,6 +61,8 @@ def fmt_stars(n):
 
 
 def health(t):
+    if t.get("kind") == "platform":
+        return "platform", "Hosted"
     if not t.get("pushed"):
         return "stale", "No repo"
     if t["pushed"] < "2025-11-18":
@@ -85,12 +90,15 @@ def row(t, base):
         '<p class="tool__tag">%s</p>'
         '<dl class="tool__meta">'
         "<div><dt>Licence</dt><dd>%s</dd></div>"
-        "<div><dt>Stars</dt><dd>%s</dd></div>"
+        "<div><dt>%s</dt><dd>%s</dd></div>"
         "<div><dt>Updated</dt><dd>%s</dd></div>"
         "<div><dt>Signal</dt><dd><span class=\"stamp stamp--%s\">%s</span></dd></div>"
         "</dl></li>"
-    ) % (band, esc(href), ext, esc(t["name"]), esc(t.get("lang") or "repo"),
-         esc(t["tagline"]), esc(licence(t)), esc(fmt_stars(t.get("stars"))),
+    ) % (band, esc(href), ext, esc(t["name"]),
+         esc("Platform" if t["kind"] == "platform" else (t.get("lang") or "Library")),
+         esc(t["tagline"]), esc(licence(t)),
+         "Pricing" if t["kind"] == "platform" else "Stars",
+         esc(t["pricing"] or "—") if t["kind"] == "platform" else esc(fmt_stars(t.get("stars"))),
          esc(fmt_date(t.get("pushed"))),
          "muted" if band == "stale" else band, label)
 
@@ -244,8 +252,8 @@ for idx, t in enumerate(DETAIL):
 </section>
 <section class="shell section">
   <div class="spec">
-    <div><dt>Licence</dt><dd>%s</dd></div>
-    <div><dt>Stars</dt><dd>%s</dd></div>
+    <div><dt>Type</dt><dd>%s</dd></div>
+    <div><dt>%s</dt><dd>%s</dd></div>
     <div><dt>Last push</dt><dd>%s</dd></div>
     <div><dt>Signal</dt><dd><span class="stamp stamp--%s">%s</span></dd></div>
     <div><dt>Language</dt><dd>%s</dd></div>
@@ -262,7 +270,10 @@ for idx, t in enumerate(DETAIL):
         esc(t["name"]),
         esc(t.get("lang") or "repository"),
         esc(t["name"]), esc(t["tagline"]), esc(t["url"]), esc(t["name"]),
-        esc(t["repo"]), esc(licence(t)), esc(fmt_stars(t.get("stars"))),
+        esc(t["repo"]),
+        "Hosted platform" if t["kind"] == "platform" else "Open-source library",
+        "Pricing" if t["kind"] == "platform" else "Stars",
+        esc(t["pricing"] or "—") if t["kind"] == "platform" else esc(fmt_stars(t.get("stars"))),
         esc(fmt_date(t.get("pushed"))), band, label,
         esc(t.get("lang") or "—"), esc(t["repo"]), jobs_html,
         prev_t["id"], esc(prev_t["name"]), next_t["id"], esc(next_t["name"]))
@@ -276,7 +287,8 @@ checks = [
     ("Not archived.", "A repository the maintainer has closed is excluded, however popular it is."),
     ("Pushed within twelve months.", "A tool that has not moved in a year is not maintained, whatever the README says."),
     ("Carries a licence.", "No licence means no legal right to use it. Those entries are dropped."),
-    ("At least 400 stars.", "A floor for community validation, not a quality score."),
+    ("At least 400 stars, for libraries.", "A floor for community validation, not a quality score."),
+    ("Hosted platforms are curated, not machine-checked.", "Stripe, Vercel and Clerk have no repository to read, so they are listed by hand and reviewed on the check date. Their rows say Platform, and the licence reads Proprietary."),
     ("Outliers cross-checked against forks.", "Above 100,000 stars the fork count is checked too, because star farms accumulate stars without contributors. Real projects at that scale are forked at 10-20% of their star count."),
     ("Metadata read at build time.", "Stars, licence, language and last push come from the GitHub API, not from a directory listing."),
 ]

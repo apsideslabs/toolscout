@@ -12,6 +12,9 @@ Requires: gh CLI authenticated (uses `gh api graphql`).
 import json
 import os
 import re
+import sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from platforms import as_records as platform_records
 import subprocess
 import time
 from datetime import date, timedelta
@@ -316,6 +319,17 @@ def main():
     json.dump(list(found.values()), open(CACHE, "w"))
     tools = [t for t in found.values() if not is_junk(t)]
     tools = verify_outliers(tools)
+
+    # hosted platforms: curated by hand, because they have no repository
+    platforms = platform_records()
+    have = set(t["repo"] for t in tools if t["repo"])
+    names = set(t["name"].lower() for t in tools)
+    added = [p for p in platforms
+             if p["name"].lower() not in names]
+    for p in added:
+        p["archived"] = False
+        tools.append(p)
+    print("hosted platforms added:", len(added))
     dropped = len(found) - len(tools)
     print("dropped as samples/docs/demos:", dropped)
     # ids must be unique across owners
@@ -328,7 +342,12 @@ def main():
         else:
             seen_ids[base] = 1
 
-    tools.sort(key=lambda t: (-(t["stars"] or 0), t["name"].lower()))
+    for t in tools:
+        t.setdefault("kind", "library")
+        t.setdefault("weight", t.get("stars") or 0)
+        t.setdefault("pricing", "")
+
+    tools.sort(key=lambda t: (-(t.get("weight") or 0), t["name"].lower()))
 
     # detail pages for the 600 strongest; the rest link straight out
     for i, t in enumerate(tools):
@@ -339,7 +358,7 @@ def main():
     print("detail pages:", sum(t["detail"] for t in tools))
 
     FIELDS = ["id", "name", "repo", "url", "tagline", "jobs", "licence",
-              "stars", "pushed", "lang", "detail"]
+              "stars", "pushed", "lang", "detail", "kind", "weight", "pricing"]
     rows = []
     for t in tools:
         repo_url = "https://github.com/" + t["repo"]
@@ -349,7 +368,8 @@ def main():
         url = "" if u == repo_url else u
         rows.append([t["id"], t["name"], t["repo"], url, clean(t["tagline"]),
                      t["jobs"], t["licence"], t["stars"] or 0, t["pushed"],
-                     t.get("lang") or "", t["detail"]])
+                     t.get("lang") or "", t["detail"], t["kind"],
+                     t.get("weight") or 0, t.get("pricing") or ""])
 
     payload = {
         "checked": CHECKED,

@@ -1121,3 +1121,11 @@ mark { background: #fff3d1; color: inherit; padding: 0 0.1em; border-radius: 2px
   .foot__cols { grid-template-columns: 1fr 1fr; }
   .foot__brand { grid-column: 1 / -1; }
 }
+
+/* hosted platforms carry their own signal */
+.tool[data-health="platform"] { border-left-color: var(--blue); }
+.stamp--platform {
+  background: #fff;
+  color: var(--blue-dark);
+  border: 1px solid var(--line);
+}
