@@ -111,7 +111,7 @@ def shell(title, desc, base, body, canonical=""):
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="topbar" role="banner">
-  <div class="shell topbar__row">
+  <div class="topbar__row">
   <a class="topbar__name" href="%sindex.html"><span class="topbar__prefix">Tool</span>scout</a>
   <nav class="topbar__nav" aria-label="Sections">
     <ul class="topbar__menu">
