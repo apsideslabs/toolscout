@@ -225,9 +225,9 @@
   function renderFacets() {
     facetsEl.innerHTML = FACETS.map(function (f) {
       var n = TOOLS.filter(f.test).length;
-      return '<button class="chip" type="button" data-facet="' + f.id + '" aria-pressed="' +
-        (state.facets[f.id] ? "true" : "false") + '">' + esc(f.label) +
-        '<span class="chip__n">' + n + "</span></button>";
+      return '<button class="cds--tag ts-chip" type="button" data-facet="' + f.id +
+        '" aria-pressed="' + (state.facets[f.id] ? "true" : "false") + '">' +
+        esc(f.label) + '<span class="ts-chip__n">' + n + "</span></button>";
     }).join("");
   }
 
@@ -286,9 +286,12 @@
     var stampBand = h.band === "stale" ? "muted" : h.band;
 
     return '<li class="tool" data-health="' + h.band + '">' +
-      '<div class="tool__body">' +
+      '<div class="tool__cell">' +
         '<h3 class="tool__name"><a href="' + esc(t.url) + '" target="_blank" rel="noopener">' +
           highlight(t.name, toks) + "</a></h3>" +
+        '<span class="tool__kind">' + esc(KIND[t.kind] || t.kind) + "</span>" +
+      "</div>" +
+      '<div class="tool__cell">' +
         '<p class="tool__tag">' + highlight(t.tagline, toks) + "</p>" +
         '<p class="tool__note"><span>Trade-off</span>' + highlight(t.note, toks) + "</p>" +
         (flags.length ? '<div class="tool__flags">' + flags.join("") + "</div>" : "") +
@@ -300,7 +303,6 @@
         "<div><dt>Stars</dt><dd>" + esc(fmtStars(t.stars)) + "</dd></div>" +
         "<div><dt>Signal</dt><dd><span class=\"stamp stamp--" + stampBand + "\">" +
           esc(h.label) + "</span></dd></div>" +
-        "<div><dt>Type</dt><dd>" + esc(KIND[t.kind] || t.kind) + "</dd></div>" +
       "</dl>" +
       "</li>";
   }
@@ -452,6 +454,17 @@
       apply();
       input.blur();
     }
+  });
+
+  /* ------------------------------------------------------- accordion */
+
+  document.querySelectorAll(".cds--accordion__heading").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var item = btn.closest(".cds--accordion__item");
+      if (!item) return;
+      var open = item.classList.toggle("cds--accordion__item--active");
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+    });
   });
 
   /* ---------------------------------------------------------- boot */

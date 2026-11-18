@@ -1,20 +1,16 @@
 Webfonts bundled with Toolscout
 ===============================
 
-This site self-hosts three typefaces so that it loads no third-party
-requests. All three are licensed under the SIL Open Font License,
-Version 1.1.
+IBM Plex Sans and IBM Plex Mono are self-hosted so the site makes no
+third-party font requests. Both are licensed under the SIL Open Font
+License, Version 1.1.
 
-  Newsreader        Copyright 2020 The Newsreader Project Authors
-                    https://github.com/productiontype/Newsreader
-  Instrument Sans   Copyright 2022 The Instrument Sans Project Authors
-                    https://github.com/Instrument/instrument-sans
-  JetBrains Mono    Copyright 2020 The JetBrains Mono Project Authors
-                    https://github.com/JetBrains/JetBrainsMono
+  IBM Plex Sans / Mono
+    Copyright (c) 2017 IBM Corp. with Reserved Font Name "Plex"
+    https://github.com/IBM/plex
 
-The files in this directory are the latin-subset WOFF2 builds served by
-the Google Fonts API, unmodified. Variable families ship as one file per
-family and style; JetBrains Mono is static, so it ships two weights.
+The files here are the latin-subset WOFF2 builds served by the Google
+Fonts API, unmodified.
 
 ----------------------------------------------------------------------
 

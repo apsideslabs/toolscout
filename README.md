@@ -25,7 +25,9 @@ Most directories are alphabetical, which means you need the name before you can 
 
 **No paid placement.** Nothing is ranked by who paid. Order comes from your query, from recency, or from stars.
 
-**Built to a system, not a template.** Warm paper field, near-black ink, deep pine for structure, one vermilion for action, gold used maybe five times on the whole page — the 60/30/10 discipline the rest of the studio works to. Newsreader carries the editorial voice, Instrument Sans the interface, JetBrains Mono every label and number. Depth is soft and layered: 1px hairlines, 8–22px radii, four shadow steps, one gradient panel. No flat slabs, no hard-edged boxes, no animation library.
+**Built on IBM Carbon, not on vibes.** The interface is the Carbon Design System v11 (Apache-2.0): its header, search field, filter tags, tiles, select, buttons, links and accordion, plus 658 `--cds-*` custom properties for every colour, border and surface. Type is IBM Plex Sans and Mono, self-hosted. `site.css` is a layout layer for the parts Carbon does not ship — the hero, the job grid and the catalogue table — written entirely against Carbon tokens, so the page inherits the system rather than imitating it.
+
+Why Carbon and not the alternatives: Primer CSS is in keep-the-lights-on mode, the Polaris React library was archived in September 2026 and its licence only covers Shopify apps, and Adobe states Spectrum CSS should only be used by Spectrum implementations. Carbon is the one that is actively maintained, framework-agnostic and documented against WCAG 2.1 AA.
 
 **Searchable by constraint.** Free tier, open source, self-hostable, active, library, service, app, CLI — stackable, encoded in the URL, and copyable with one button, so a filtered view is a shareable link.
 
@@ -39,10 +41,12 @@ Most directories are alphabetical, which means you need the name before you can 
 index.html          markup, no templating
 styles.css          all styling; design tokens at the top
 app.js              filtering, ranking, rendering — ~350 lines, no dependencies
-fonts.css           @font-face declarations for the self-hosted fonts
+fonts.css           @font-face declarations for IBM Plex
 data/tools.js       generated catalogue (window.TOOLSCOUT)
 scripts/build_data.py   the catalogue source + GitHub metadata fetch
-fonts/              five WOFF2 files, OFL 1.1 (see fonts/OFL.txt)
+fonts/              IBM Plex WOFF2 files, OFL 1.1 (see fonts/OFL.txt)
+carbon/carbon.css   Carbon v11 stylesheet, IBM font-face blocks stripped
+site.css            layout layer written against Carbon tokens
 ```
 
 There is no build step and no framework. GitHub Pages serves these files directly. The only generated artefact is `data/tools.js`.
