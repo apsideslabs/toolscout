@@ -97,25 +97,55 @@ QUERIES = {
     ],
 }
 
+TOPICS = [
+    ("build", "Build and ship", "Everything between an idea and a running service."),
+    ("ai", "AI and machine learning", "Models, agents, and the tooling that wraps them."),
+    ("create", "Create and edit", "Images, video, audio, words and screens."),
+    ("work", "Work and productivity", "Notes, documents, meetings and the inbox."),
+    ("grow", "Grow and sell", "Marketing, sales and customer support."),
+    ("learn", "Learn and research", "Finding things out, and teaching them."),
+    ("admin", "Business and admin", "Money, contracts, people and compliance."),
+    ("tools", "Tools and environment", "The editor and the shell."),
+]
+
+# (id, topic, title, blurb)
 JOBS = [
-    ("frontend", "Build the interface", "Ship a usable UI without inventing a build pipeline."),
-    ("auth", "Add sign-in and permissions", "Users, sessions, roles, SSO — the part nobody demos."),
-    ("database", "Store and query data", "Pick the store before the schema hardens."),
-    ("api", "Build, document and test an API", "Contracts, validation, and something to click instead of curl."),
-    ("deploy", "Get it running in production", "From laptop to a URL that stays up."),
-    ("ci", "Automate build and test", "Stop being the integration server."),
-    ("observe", "See what production is doing", "Metrics, traces, and the alert that wakes you."),
-    ("email", "Send mail and notifications", "Transactional mail, templates, and landing in the inbox."),
-    ("payments", "Take money", "Checkout, subscriptions, tax, and the India question."),
-    ("search", "Make things findable", "Typo tolerance and relevance without a search team."),
-    ("files", "Store and serve files", "Uploads, images, and the egress bill."),
-    ("ai", "Add a model to the product", "Providers, streaming, evals, and cost per request."),
-    ("automate", "Glue services and run jobs", "Webhooks, retries, and long-running work."),
-    ("docs", "Write and publish documentation", "Reference docs people can actually search."),
-    ("terminal", "Move faster in the shell", "Replacements for the tools you type a thousand times a day."),
-    ("editor", "Write and review code", "The editor, the formatter, the lint rules."),
-    ("design", "Design and prototype", "Screens, diagrams, and the assets that go in them."),
-    ("media", "Edit images, video and audio", "Cut, generate and clean up the assets a product needs."),
+    ("frontend", "build", "Frontend and UI", "Ship a usable interface without inventing a build pipeline."),
+    ("api", "build", "APIs and backends", "Contracts, validation, and something to click instead of curl."),
+    ("database", "build", "Databases and storage", "Pick the store before the schema hardens."),
+    ("deploy", "build", "Deploy and hosting", "From laptop to a URL that stays up."),
+    ("ci", "build", "CI and testing", "Stop being the integration server."),
+    ("observe", "build", "Observability", "Metrics, traces, and the alert that wakes you."),
+    ("auth", "build", "Auth and security", "Users, sessions, roles, SSO — and keeping them safe."),
+    ("search", "build", "Search and retrieval", "Typo tolerance and relevance without a search team."),
+    ("files", "build", "Files and media delivery", "Uploads, images, and the egress bill."),
+    ("automate", "build", "Automation and jobs", "Webhooks, retries, and long-running work."),
+
+    ("ai", "ai", "AI models and agents", "Providers, streaming, evals, and cost per request."),
+
+    ("media", "create", "Video, image and audio", "Cut, generate and clean up the assets a product needs."),
+    ("writing", "create", "Writing and content", "Draft, edit, translate and tighten the words."),
+    ("design", "create", "Design and prototyping", "Screens, diagrams, and the assets that go in them."),
+
+    ("productivity", "work", "Notes, docs and tasks", "Where the thinking gets written down."),
+    ("docs", "work", "Documentation", "Reference docs people can actually search."),
+    ("email", "work", "Email and notifications", "Transactional mail, templates, and landing in the inbox."),
+
+    ("marketing", "grow", "Marketing and SEO", "Being found, and being worth finding."),
+    ("sales", "grow", "Sales and CRM", "Pipeline, outreach and revenue."),
+    ("support", "grow", "Customer support", "Answering people without losing the thread."),
+
+    ("research", "learn", "Research and discovery", "Reading everything, and keeping what matters."),
+    ("education", "learn", "Education and courses", "Teaching, practising and assessing."),
+
+    ("payments", "admin", "Payments and billing", "Checkout, subscriptions, tax, and the India question."),
+    ("finance", "admin", "Finance and accounting", "Books, invoices, spend and forecasts."),
+    ("legal", "admin", "Legal and compliance", "Contracts, policies and the paperwork nobody reads."),
+    ("hr", "admin", "Hiring and HR", "Finding people and keeping them."),
+    ("health", "admin", "Health and wellness", "Clinical, fitness and wellbeing software."),
+
+    ("terminal", "tools", "Terminal and shell", "Replacements for the tools you type a thousand times a day."),
+    ("editor", "tools", "Editor and code review", "The editor, the formatter, the lint rules."),
 ]
 
 GQL = """
@@ -406,7 +436,8 @@ def main():
 
     payload = {
         "checked": CHECKED,
-        "jobs": [{"id": i, "title": tt, "blurb": b} for i, tt, b in JOBS],
+        "topics": [{"id": i, "title": t, "blurb": b} for i, t, b in TOPICS],
+        "jobs": [{"id": i, "topic": tp, "title": tt, "blurb": b} for i, tp, tt, b in JOBS],
         "fields": FIELDS,
         "rows": rows,
     }

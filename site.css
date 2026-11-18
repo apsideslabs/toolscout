@@ -335,9 +335,10 @@ a:hover { text-decoration: underline; }
 .index { padding-block: clamp(2rem, 4vw, 3rem); }
 
 /* ── job cards ────────────────────────────────────────────────────────── */
-.jobs {
+.jobs { display: block; }
+.topic .jobs {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: var(--sp-4);
 }
 .job {
@@ -1128,4 +1129,31 @@ mark { background: #fff3d1; color: inherit; padding: 0 0.1em; border-radius: 2px
   background: #fff;
   color: var(--blue-dark);
   border: 1px solid var(--line);
+}
+
+/* ══ topic groups in the browse grid ════════════════════════════════════ */
+
+.topic { margin-bottom: clamp(1.6rem, 3vw, 2.4rem); }
+.topic:last-child { margin-bottom: 0; }
+.topic__head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+  padding-bottom: 0.55rem;
+  margin-bottom: 0.9rem;
+  border-bottom: 1px solid var(--line);
+}
+.topic__title {
+  margin: 0;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.topic__blurb {
+  margin: 0;
+  font-size: 0.86rem;
+  color: var(--muted);
 }

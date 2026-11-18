@@ -26,7 +26,8 @@
     o.pricing = o.pricing || "";
     return o;
   });
-  var JOBS = DATA.jobs;
+  var JOBS = DATA.jobs || [];
+  var TOPICS = DATA.topics || [];
   var CHECKED = DATA.checked;
   var CHECKED_MS = Date.parse(CHECKED + "T00:00:00Z");
   var DAY = 86400000;
@@ -358,20 +359,37 @@
   }
 
   function renderJobs() {
-    jobsEl.innerHTML = JOBS.map(function (j, i) {
-      var n = String(i + 1).padStart(2, "0");
-      var on = state.job === j.id;
-      return '<a class="job" href="jobs/' + j.id + '.html" data-job="' + j.id + '"' +
-        ' aria-pressed="' + (on ? "true" : "false") + '"' +
-        ' style="--job-c:' + JOB_COLOR[j.id] + '"' +
-        (on ? ' aria-current="true"' : "") + ">" +
-        '<span class="job__n">' + n + "</span>" +
-        '<span class="job__t">' + esc(j.title) + "</span>" +
-        '<span class="job__tools">' + esc(samples(j.id)) + "</span>" +
-        '<span class="job__c">' + jobCount(j.id) + " tools</span>" +
-        "</a>";
+    var byTopic = {};
+    JOBS.forEach(function (jb) {
+      (byTopic[jb.topic] = byTopic[jb.topic] || []).push(jb);
+    });
+
+    jobsEl.innerHTML = TOPICS.map(function (tp) {
+      var subs = byTopic[tp.id] || [];
+      if (!subs.length) return "";
+      var cards = subs.map(function (jb) {
+        var i = JOBS.indexOf(jb);
+        var on = state.job === jb.id;
+        return '<a class="job" href="jobs/' + jb.id + '.html" data-job="' + jb.id + '"' +
+          ' aria-pressed="' + (on ? "true" : "false") + '"' +
+          ' style="--job-c:' + JOB_COLOR[jb.id] + '">' +
+          '<span class="job__n">' + (i + 1 < 10 ? "0" : "") + (i + 1) + "</span>" +
+          '<span class="job__t">' + esc(jb.title) + "</span>" +
+          '<span class="job__tools">' + esc(samples(jb.id)) + "</span>" +
+          '<span class="job__c">' + jobCount(jb.id) + " tools</span>" +
+          "</a>";
+      }).join("");
+
+      return '<div class="topic">' +
+        '<div class="topic__head">' +
+          '<h3 class="topic__title">' + esc(tp.title) + "</h3>" +
+          '<p class="topic__blurb">' + esc(tp.blurb) + "</p>" +
+        "</div>" +
+        '<div class="jobs">' + cards + "</div>" +
+        "</div>";
     }).join("");
   }
+
 
   /* ---------------------------------------------------------- render: tools */
 
@@ -611,8 +629,8 @@
   var hc = document.getElementById("heroCount");
   if (hc) hc.textContent = TOOLS.length.toLocaleString("en-IN");
   document.getElementById("mastheadNote").textContent =
-    TOOLS.length.toLocaleString("en-IN") + " tools · " + JOBS.length +
-    " jobs · checked " + fmtDate(CHECKED);
+    TOOLS.length.toLocaleString("en-IN") + " tools · " + TOPICS.length +
+    " topics · " + JOBS.length + " subtopics · checked " + fmtDate(CHECKED);
 
   var setText = function (id, v) {
     var el = document.getElementById(id);
@@ -622,7 +640,8 @@
   setText("statJobs", JOBS.length);
   setText("statRepos", TOOLS.filter(function (t) { return health(t).band === "fresh"; }).length);
   setText("statDate", fmtDate(CHECKED));
-  setText("indexMeta", TOOLS.length + " tools across " + JOBS.length + " jobs");
+  setText("indexMeta", TOOLS.length.toLocaleString("en-IN") + " tools across " +
+    TOPICS.length + " topics and " + JOBS.length + " subtopics");
   setText("coloDate", fmtDate(CHECKED));
   document.getElementById("footData").textContent =
     TOOLS.length + " tools · " + JOBS.length + " jobs · checked " + fmtDate(CHECKED);
