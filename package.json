@@ -1,0 +1,16 @@
+{
+  "name": "site",
+  "version": "1.0.0",
+  "description": "An index of developer tools, ordered by **the job you are trying to do** rather than by product name.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@carbon/styles": "^1.119.0",
+    "sass": "^1.108.2"
+  }
+}

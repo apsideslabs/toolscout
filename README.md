@@ -48,7 +48,8 @@ method.html           how entries are chosen
 sitemap.xml           136 URLs
 app.js                index filtering and ranking (~330 lines, no dependencies)
 site.css              layout layer written against Carbon tokens
-carbon/carbon.css     Carbon v11 stylesheet, IBM font-face blocks stripped
+carbon.scss           the Carbon entry: only the components this site renders
+carbon/carbon.css     compiled from carbon.scss + the g100 theme tokens
 data/tools.js         generated catalogue
 scripts/build_data.py catalogue source + GitHub metadata fetch
 scripts/build_pages.py generates the 135 pages and the sitemap
@@ -104,6 +105,20 @@ python3 scripts/build_data.py    # requires an authenticated gh CLI
 The script batches up to 40 repositories per GraphQL query, so the whole catalogue refreshes in three requests.
 
 ---
+
+## Building the stylesheet
+
+Carbon's prebuilt sheet is 1.1 MB because it carries every component. `carbon.scss`
+imports only the twelve this site uses:
+
+```bash
+npm i @carbon/styles sass
+npx sass carbon.scss /tmp/c.css --no-source-map --style=compressed --load-path=node_modules
+# prepend carbon/theme.css (the .cds--g100 and .cds--white token blocks), then:
+# cat carbon/theme.css /tmp/c.css > carbon/carbon.css
+```
+
+That is 240 KB instead of 1.1 MB. Rebuild it only when a new Carbon component is used.
 
 ## Refreshing the metadata
 
