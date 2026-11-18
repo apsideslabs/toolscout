@@ -188,6 +188,7 @@
     { re: /ai|llm|model|gpt|claude|chatbot|embedding|vector|prompt/i, jobs: ["ai"] },
     { re: /docs|documentation|api reference|manual/i, jobs: ["docs"] },
     { re: /design|prototype|mockup|icon|wireframe|figma/i, jobs: ["design"] },
+    { re: /edit (a )?(video|image|photo|audio)|video edit|photo edit|remove background|upscale|transcri|voiceover|dub|subtitle|generate (an? )?(image|video|voice)|music|thumbnail|3d model/i, jobs: ["media"] },
     { re: /editor|ide|vim|code editor|lint|format/i, jobs: ["editor"] },
     { re: /terminal|shell|command line|cli|prompt/i, jobs: ["terminal"] },
     { re: /ui|front ?end|react|component|css|landing page|website|site/i, jobs: ["frontend"] },

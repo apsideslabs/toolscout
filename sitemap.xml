@@ -19,6 +19,7 @@
 <url><loc>https://apsideslabs.github.io/toolscout/jobs/terminal.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/jobs/editor.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/jobs/design.html</loc><lastmod>2026-11-18</lastmod></url>
+<url><loc>https://apsideslabs.github.io/toolscout/jobs/media.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/ecc.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/hermes-agent.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/n8n.html</loc><lastmod>2026-11-18</lastmod></url>
@@ -80,7 +81,6 @@
 <url><loc>https://apsideslabs.github.io/toolscout/tools/clerk.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/cloudflare-pages.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/cloudflare-r2.html</loc><lastmod>2026-11-18</lastmod></url>
-<url><loc>https://apsideslabs.github.io/toolscout/tools/cloudinary.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/cursor.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/datadog.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/elastic-cloud.html</loc><lastmod>2026-11-18</lastmod></url>
@@ -91,10 +91,8 @@
 <url><loc>https://apsideslabs.github.io/toolscout/tools/gitlab.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/gitlab-ci.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/google-cloud.html</loc><lastmod>2026-11-18</lastmod></url>
-<url><loc>https://apsideslabs.github.io/toolscout/tools/google-gemini.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/grafana-cloud.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/homebrew.html</loc><lastmod>2026-11-18</lastmod></url>
-<url><loc>https://apsideslabs.github.io/toolscout/tools/hugging-face.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/iterm2.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/jetbrains-ides.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/mintlify.html</loc><lastmod>2026-11-18</lastmod></url>
@@ -108,7 +106,6 @@
 <url><loc>https://apsideslabs.github.io/toolscout/tools/paddle.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/pagerduty.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/pinecone.html</loc><lastmod>2026-11-18</lastmod></url>
-<url><loc>https://apsideslabs.github.io/toolscout/tools/postman.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/postmark.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/razorpay.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/redis-cloud.html</loc><lastmod>2026-11-18</lastmod></url>
@@ -389,7 +386,6 @@
 <url><loc>https://apsideslabs.github.io/toolscout/tools/cockroachdb-cloud.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/coderabbit.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/cognito.html</loc><lastmod>2026-11-18</lastmod></url>
-<url><loc>https://apsideslabs.github.io/toolscout/tools/cohere.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/confluence.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/contentful.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/customer-io.html</loc><lastmod>2026-11-18</lastmod></url>
@@ -400,18 +396,15 @@
 <url><loc>https://apsideslabs.github.io/toolscout/tools/framer.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/ghostty.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/gitbook.html</loc><lastmod>2026-11-18</lastmod></url>
-<url><loc>https://apsideslabs.github.io/toolscout/tools/groq.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/heroku.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/hetzner-cloud.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/honeycomb.html</loc><lastmod>2026-11-18</lastmod></url>
-<url><loc>https://apsideslabs.github.io/toolscout/tools/langsmith.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/lemon-squeezy.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/mailgun.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/make.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/meilisearch-cloud.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/miro.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/mistral.html</loc><lastmod>2026-11-18</lastmod></url>
-<url><loc>https://apsideslabs.github.io/toolscout/tools/mux.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/n8n-cloud.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/opensearch-service.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/penpot.html</loc><lastmod>2026-11-18</lastmod></url>
@@ -421,7 +414,6 @@
 <url><loc>https://apsideslabs.github.io/toolscout/tools/railway.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/read-the-docs.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/render.html</loc><lastmod>2026-11-18</lastmod></url>
-<url><loc>https://apsideslabs.github.io/toolscout/tools/replicate.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/retool.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/sanity.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/sourcegraph.html</loc><lastmod>2026-11-18</lastmod></url>
@@ -433,7 +425,6 @@
 <url><loc>https://apsideslabs.github.io/toolscout/tools/supabase-storage.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/swaggerhub.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/temporal-cloud.html</loc><lastmod>2026-11-18</lastmod></url>
-<url><loc>https://apsideslabs.github.io/toolscout/tools/together-ai.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/typesense-cloud.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/uploadthing.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/weaviate-cloud.html</loc><lastmod>2026-11-18</lastmod></url>
@@ -619,4 +610,14 @@
 <url><loc>https://apsideslabs.github.io/toolscout/tools/sa-token.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/audacity.html</loc><lastmod>2026-11-18</lastmod></url>
 <url><loc>https://apsideslabs.github.io/toolscout/tools/fail2ban.html</loc><lastmod>2026-11-18</lastmod></url>
+<url><loc>https://apsideslabs.github.io/toolscout/tools/migrate.html</loc><lastmod>2026-11-18</lastmod></url>
+<url><loc>https://apsideslabs.github.io/toolscout/tools/screenity.html</loc><lastmod>2026-11-18</lastmod></url>
+<url><loc>https://apsideslabs.github.io/toolscout/tools/lightgbm.html</loc><lastmod>2026-11-18</lastmod></url>
+<url><loc>https://apsideslabs.github.io/toolscout/tools/gradle.html</loc><lastmod>2026-11-18</lastmod></url>
+<url><loc>https://apsideslabs.github.io/toolscout/tools/amis.html</loc><lastmod>2026-11-18</lastmod></url>
+<url><loc>https://apsideslabs.github.io/toolscout/tools/kubespray.html</loc><lastmod>2026-11-18</lastmod></url>
+<url><loc>https://apsideslabs.github.io/toolscout/tools/airsim.html</loc><lastmod>2026-11-18</lastmod></url>
+<url><loc>https://apsideslabs.github.io/toolscout/tools/naive-ui.html</loc><lastmod>2026-11-18</lastmod></url>
+<url><loc>https://apsideslabs.github.io/toolscout/tools/bit.html</loc><lastmod>2026-11-18</lastmod></url>
+<url><loc>https://apsideslabs.github.io/toolscout/tools/maxun.html</loc><lastmod>2026-11-18</lastmod></url>
 </urlset>

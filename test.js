@@ -29,8 +29,8 @@ const names = () => $$("#tools .tool__name").map((n) => n.textContent.trim());
 
 (async () => {
   console.log("catalogue");
-  ok(DATA.rows.length > 2000, "thousands of tools: " + DATA.rows.length);
-  ok(DATA.jobs.length === 17, "17 jobs");
+  ok(DATA.rows.length >= 5000, "5k+ tools: " + DATA.rows.length);
+  ok(DATA.jobs.length === 18, "18 jobs");
   ok(new Set(DATA.rows.map((r) => r[0])).size === DATA.rows.length, "ids unique");
   ok(DATA.rows.every((r) => !r[3] || /^https:\/\//.test(r[3])), "urls are https or empty");
   const libs = DATA.rows.filter((r) => r[11] !== "platform");
@@ -50,18 +50,18 @@ const names = () => $$("#tools .tool__name").map((n) => n.textContent.trim());
   const toolPages = fs.readdirSync(path.join(SITE, "tools")).filter((f) => f.endsWith(".html"));
   const jobPages = fs.readdirSync(path.join(SITE, "jobs")).filter((f) => f.endsWith(".html"));
   ok(toolPages.length >= 600, "600+ tool pages, got " + toolPages.length);
-  ok(jobPages.length === 17, "17 job pages, got " + jobPages.length);
+  ok(jobPages.length === 18, "18 job pages, got " + jobPages.length);
   ok(fs.existsSync(path.join(SITE, "method.html")), "method page exists");
   ok(fs.existsSync(path.join(SITE, "sitemap.xml")), "sitemap exists");
   const sitemap = fs.readFileSync(path.join(SITE, "sitemap.xml"), "utf8");
-  ok((sitemap.match(/<url>/g) || []).length === 619, "619 sitemap urls");
+  ok((sitemap.match(/<url>/g) || []).length === 620, "620 sitemap urls");
   const sampleTool = toolPages.sort()[0];
   const onePage = fs.readFileSync(path.join(SITE, "tools", sampleTool), "utf8");
   ok(onePage.includes("../site.css"), "sub-page asset paths are relative");
   ok(onePage.includes("canonical"), "sub-page has a canonical url");
 
   console.log("index");
-  ok($$("#jobs .job").length === 17, "17 job tiles");
+  ok($$("#jobs .job").length === 18, "18 job tiles");
   ok($$("#facets .ts-chip").length === 7, "7 filter chips");
   ok($$("#jobs .job").every((a) => a.tagName === "A"), "job tiles are links");
   ok($("#jobs .job").getAttribute("href").startsWith("jobs/"), "tile links to a job page");

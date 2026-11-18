@@ -115,6 +115,7 @@ JOBS = [
     ("terminal", "Move faster in the shell", "Replacements for the tools you type a thousand times a day."),
     ("editor", "Write and review code", "The editor, the formatter, the lint rules."),
     ("design", "Design and prototype", "Screens, diagrams, and the assets that go in them."),
+    ("media", "Edit images, video and audio", "Cut, generate and clean up the assets a product needs."),
 ]
 
 GQL = """
@@ -319,6 +320,38 @@ def main():
     json.dump(list(found.values()), open(CACHE, "w"))
     tools = [t for t in found.values() if not is_junk(t)]
     tools = verify_outliers(tools)
+
+    # AI and editing tools harvested from a public directory (see data/aitools.json)
+    harvest_path = os.path.join(ROOT, "data", "aitools.json")
+    if os.path.exists(harvest_path):
+        harvest = json.load(open(harvest_path))
+        names_l = set(t["name"].lower() for t in tools)
+        added_h = 0
+        for i, h in enumerate(harvest):
+            if h["name"].lower() in names_l:
+                continue
+            names_l.add(h["name"].lower())
+            slug = re.sub(r"[^a-z0-9]+", "-", h["name"].lower()).strip("-")[:48] or "tool"
+            tools.append({
+                "id": "ai-" + slug,
+                "name": h["name"],
+                "repo": "",
+                "url": h["url"],
+                "tagline": h["tagline"],
+                "jobs": h["jobs"],
+                "licence": "Proprietary",
+                "stars": 0,
+                "weight": 6000,
+                "pushed": h.get("checked") or "",
+                "lang": "",
+                "detail": 0,
+                "kind": "platform",
+                "pricing": h.get("pricing") or "unknown",
+                "tier": 3,
+                "archived": False,
+            })
+            added_h += 1
+        print("harvested AI/editing tools added:", added_h)
 
     # hosted platforms: curated by hand, because they have no repository
     platforms = platform_records()
