@@ -74,7 +74,9 @@
   <section class="hero">
     <div class="shell hero__grid">
       <div class="hero__main">
+        <p class="hero__eyebrow">A task-first index of developer tools</p>
         <h1 class="hero__title">Start with the job.<br><span>The tool is the easy part.</span></h1>
+        <p class="hero__sub">117 tools filed under what they actually do, with the maintenance signal read from each repository — not a star count. Search in plain English, or open a job and browse.</p>
 
         <form class="searchrow" id="need" role="search" autocomplete="off">
           <div class="search">
@@ -118,6 +120,17 @@
 
       <div class="jobs" id="jobs"></div>
 
+      <div class="block">
+        <div class="section-head">
+          <div>
+            <p class="label">Recently updated</p>
+            <h2 class="section-title">Moving this month</h2>
+          </div>
+          <p class="section-meta">last push, newest first</p>
+        </div>
+        <div class="recent" id="recentGrid"></div>
+      </div>
+
       <div class="results" id="results" hidden>
         <div class="results__bar">
           <p class="results__count" id="resultCount" aria-live="polite"></p>
@@ -140,6 +153,18 @@
           <p class="empty">Nothing matches. Try:</p>
           <div class="suggest-row" id="suggestRow"></div>
         </div>
+      </div>
+    </div>
+  </section>
+  <section class="cta">
+    <div class="shell cta__row">
+      <div>
+        <h2 class="cta__title">Every entry shows its working</h2>
+        <p class="cta__sub">Where the facts came from, what the health bands measure, and what this index refuses to claim.</p>
+      </div>
+      <div class="cta__actions">
+        <a class="btn btn--primary" href="method.html">Read the method</a>
+        <a class="btn btn--outline" href="https://github.com/apsideslabs/toolscout">View the source</a>
       </div>
     </div>
   </section>

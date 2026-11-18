@@ -553,6 +553,29 @@
     }
   }
 
+  /* -------------------------------------------------- recently updated */
+
+  function renderRecent() {
+    var el = document.getElementById("recentGrid");
+    if (!el) return;
+    var recent = TOOLS.slice().sort(function (a, b) {
+      return String(b.pushed || "").localeCompare(String(a.pushed || ""));
+    }).slice(0, 6);
+
+    el.innerHTML = recent.map(function (t) {
+      var h = health(t);
+      var band = h.band === "stale" ? "muted" : h.band;
+      return '<a class="rcard" href="tools/' + esc(t.id) + '.html">' +
+        '<span class="rcard__name">' + esc(t.name) + "</span>" +
+        '<span class="rcard__tag">' + esc(t.tagline) + "</span>" +
+        '<span class="rcard__meta">' +
+          '<span class="stamp stamp--' + band + '">' + esc(h.label) + "</span>" +
+          "<span>" + esc(fmtDate(t.pushed)) + "</span>" +
+        "</span>" +
+        "</a>";
+    }).join("");
+  }
+
   /* ---------------------------------------------------------- boot */
 
   var withRepo = TOOLS.filter(function (t) { return !!t.repo; }).length;
@@ -578,6 +601,7 @@
   }
 
   renderMatrix();
+  renderRecent();
 
   readURL();
   input.value = state.q;
