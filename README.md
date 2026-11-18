@@ -4,7 +4,7 @@ An index of developer tools, ordered by **the job you are trying to do** rather 
 
 Most directories are alphabetical, which means you need the name before you can find it. Toolscout starts from the problem — "send transactional email", "add sign-in", "see what production is doing" — and every entry carries a maintenance signal read from its own repository instead of a decorative star count.
 
-**117 tools · 17 jobs · 93 entries with live GitHub metadata.**
+**117 tools · 17 jobs · 135 pages · 93 entries with live GitHub metadata.**
 
 ---
 
@@ -37,19 +37,26 @@ Why Carbon and not the alternatives: Primer CSS is in keep-the-lights-on mode, t
 
 ## Structure
 
+135 pages, not one. Every job and every tool has its own URL, because that is
+the difference between a directory that compounds and a page that scrolls.
+
 ```
-index.html          markup, no templating
-styles.css          all styling; design tokens at the top
-app.js              filtering, ranking, rendering — ~350 lines, no dependencies
-fonts.css           @font-face declarations for IBM Plex
-data/tools.js       generated catalogue (window.TOOLSCOUT)
-scripts/build_data.py   the catalogue source + GitHub metadata fetch
-fonts/              IBM Plex WOFF2 files, OFL 1.1 (see fonts/OFL.txt)
-carbon/carbon.css   Carbon v11 stylesheet, IBM font-face blocks stripped
-site.css            layout layer written against Carbon tokens
+index.html            the index: search, filters, the matrix, 17 job tiles
+jobs/<id>.html        17 job pages — one per job, with its own tools and matrix
+tools/<slug>.html     117 tool pages — spec, trade-off, jobs, matrix
+method.html           how entries are chosen
+sitemap.xml           136 URLs
+app.js                index filtering and ranking (~330 lines, no dependencies)
+site.css              layout layer written against Carbon tokens
+carbon/carbon.css     Carbon v11 stylesheet, IBM font-face blocks stripped
+data/tools.js         generated catalogue
+scripts/build_data.py catalogue source + GitHub metadata fetch
+scripts/build_pages.py generates the 135 pages and the sitemap
+fonts/                IBM Plex WOFF2, OFL 1.1
 ```
 
-There is no build step and no framework. GitHub Pages serves these files directly. The only generated artefact is `data/tools.js`.
+There is no build step to serve the site — the pages are static files. The two
+Python scripts generate them.
 
 ### Why `data/tools.js` and not `tools.json`
 

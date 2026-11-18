@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Method — Toolscout</title>
+<meta name="description" content="How entries are chosen and what the health bands mean.">
+<meta name="theme-color" content="#161616">
+<link rel="canonical" href="https://apsideslabs.github.io/toolscout/method.html">
+<link rel="preload" href="fonts/ibm-plex-sans-normal-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="carbon/carbon.css">
+<link rel="stylesheet" href="site.css">
+<link rel="icon" href="assets/mark.svg">
+</head>
+<body class="cds--g100">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="cds--header" role="banner">
+  <a class="cds--header__name" href="index.html"><span class="cds--header__name--prefix">Tool</span>scout</a>
+  <nav class="cds--header__nav" aria-label="Sections">
+    <ul class="cds--header__menu-bar">
+      <li><a class="cds--header__menu-item" href="index.html#index">Index</a></li>
+      <li><a class="cds--header__menu-item" href="method.html">Method</a></li>
+      <li><a class="cds--header__menu-item" href="https://github.com/apsideslabs/toolscout" rel="noopener">Source</a></li>
+    </ul>
+  </nav>
+</header>
+<main id="main">
+<section class="page-head">
+  <div class="shell">
+    <p class="cds--label">Method</p>
+    <h1 class="page-title">How an entry gets here</h1>
+  </div>
+</section>
+<section class="shell section">
+  <div class="spec spec--method">
+    <div><dt>01</dt><dd>Chosen by job, not by category. A tool can sit under several — Postgres is a database and a search option.</dd></div>
+    <div><dt>02</dt><dd>Health comes from the repository: last push, licence, language and stars, read from the GitHub API at build time.</dd></div>
+    <div><dt>03</dt><dd>Fresh is a push within 30 days, slowing within a year, stale beyond that. Archived means the repository is closed.</dd></div>
+    <div><dt>04</dt><dd>No paid placement. Order follows your query, recency, or stars. A listing never proves a tool is safe.</dd></div>
+  </div>
+</section>
+<section class="shell section">
+  <h2 class="page-sub">Before you install anything</h2>
+  <ol class="checks"><li><b>Read the last commit and the last release.</b> Commits this month plus a release this quarter is alive. An eighteen-month-old release is a risk you are choosing to take.</li><li><b>Treat stars as an order of magnitude.</b> 40,000 against 400 is real information. 12,000 against 9,000 is noise.</li><li><b>Check the licence, and any recent change to it.</b> A move from an open licence to source-available is a commercial pivot, and the free tier becomes a business decision.</li><li><b>Look for a Docker image and a Compose file.</b> They signal that upgrades, persistent data and reverse proxies have been thought about.</li><li><b>Read the open issues, not the README.</b> Sort by most-commented. It shows what actually hurts, and whether maintainers answer.</li></ol>
+</section>
+</main>
+<footer class="foot">
+  <div class="shell foot__row">
+    <span>117 tools · 17 jobs · checked 17 Nov 2026</span>
+    <span><a class="cds--link" href="method.html">Method</a> · <a class="cds--link" href="https://github.com/apsideslabs/toolscout">Source</a></span>
+  </div>
+</footer>
+</body>
+</html>

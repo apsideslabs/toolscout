@@ -260,16 +260,15 @@
     jobsEl.innerHTML = JOBS.map(function (j, i) {
       var n = String(i + 1).padStart(2, "0");
       var on = state.job === j.id;
-      return '<button class="job" type="button" data-job="' + j.id + '"' +
+      return '<a class="job" href="jobs/' + j.id + '.html" data-job="' + j.id + '"' +
         ' aria-pressed="' + (on ? "true" : "false") + '"' +
         ' style="--job-c:' + JOB_COLOR[j.id] + '"' +
         (on ? ' aria-current="true"' : "") + ">" +
         '<span class="job__n">' + n + "</span>" +
         '<span class="job__t">' + esc(j.title) + "</span>" +
-        '<span class="job__b">' + esc(j.blurb) + "</span>" +
         '<span class="job__tools">' + esc(samples(j.id)) + "</span>" +
         '<span class="job__c">' + jobCount(j.id) + " tools</span>" +
-        "</button>";
+        "</a>";
     }).join("");
   }
 
@@ -284,49 +283,22 @@
 
   function toolRow(t, toks) {
     var h = health(t);
-    var flags = [];
-    if (t.archived) flags.push('<span class="flag flag--warn">Repository archived</span>');
-    if (t.selfhost) flags.push('<span class="flag">Self-hostable</span>');
-    if (isOpen(t)) flags.push('<span class="flag">' + esc(fmtLicence(t.licence)) + "</span>");
-    if (t.lang) flags.push('<span class="flag">' + esc(t.lang) + "</span>");
-
-    var costLabel = t.cost === "free" ? "Free / OSS"
-      : t.cost === "freemium" ? "Freemium" : "Paid";
-
-    var stampBand = h.band === "stale" ? "muted" : h.band;
+    var band = h.band === "stale" ? "muted" : h.band;
 
     return '<li class="tool" data-health="' + h.band + '">' +
       '<div class="tool__cell">' +
-        '<h3 class="tool__name"><a href="' + esc(t.url) + '" target="_blank" rel="noopener">' +
+        '<h3 class="tool__name"><a href="tools/' + esc(t.id) + '.html">' +
           highlight(t.name, toks) + "</a></h3>" +
         '<span class="tool__kind">' + esc(KIND[t.kind] || t.kind) + "</span>" +
       "</div>" +
-      '<div class="tool__cell">' +
-        '<p class="tool__tag">' + highlight(t.tagline, toks) + "</p>" +
-        '<p class="tool__note"><span>Trade-off</span>' + highlight(t.note, toks) + "</p>" +
-        (flags.length ? '<div class="tool__flags">' + flags.join("") + "</div>" : "") +
-      "</div>" +
+      '<p class="tool__tag">' + highlight(t.tagline, toks) + "</p>" +
       '<dl class="tool__meta">' +
         "<div><dt>Licence</dt><dd>" + esc(fmtLicence(t.licence)) + "</dd></div>" +
-        "<div><dt>Cost</dt><dd>" + esc(costLabel) + "</dd></div>" +
         "<div><dt>Updated</dt><dd>" + esc(fmtDate(t.pushed)) + "</dd></div>" +
-        "<div><dt>Stars</dt><dd>" + esc(fmtStars(t.stars)) + "</dd></div>" +
-        "<div><dt>Signal</dt><dd><span class=\"stamp stamp--" + stampBand + "\">" +
+        "<div><dt>Signal</dt><dd><span class=\"stamp stamp--" + band + "\">" +
           esc(h.label) + "</span></dd></div>" +
       "</dl>" +
       "</li>";
-  }
-
-  var SUGGESTIONS = ["email", "auth", "database", "search", "payments",
-                     "open source", "self-hostable"];
-
-  function renderSuggestions() {
-    var row = document.getElementById("suggestRow");
-    if (!row) return;
-    row.innerHTML = SUGGESTIONS.map(function (s) {
-      return '<button class="suggest" type="button" data-suggest="' +
-        esc(s) + '">' + esc(s) + "</button>";
-    }).join("");
   }
 
   function describe() {
@@ -403,17 +375,6 @@
     if (state.facets[id]) delete state.facets[id];
     else state.facets[id] = true;
     apply();
-  });
-
-  jobsEl.addEventListener("click", function (e) {
-    var b = e.target.closest("[data-job]");
-    if (!b) return;
-    var id = b.getAttribute("data-job");
-    state.job = state.job === id ? "" : id;
-    apply();
-    if (state.job) {
-      document.getElementById("results").scrollIntoView({ behavior: "smooth", block: "start" });
-    }
   });
 
   sortEl.addEventListener("change", function () {
@@ -507,17 +468,6 @@
     }
   }
 
-  /* ------------------------------------------------------- accordion */
-
-  document.querySelectorAll(".cds--accordion__heading").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      var item = btn.closest(".cds--accordion__item");
-      if (!item) return;
-      var open = item.classList.toggle("cds--accordion__item--active");
-      btn.setAttribute("aria-expanded", open ? "true" : "false");
-    });
-  });
-
   /* ---------------------------------------------------------- boot */
 
   var withRepo = TOOLS.filter(function (t) { return !!t.repo; }).length;
@@ -536,8 +486,7 @@
   setText("indexMeta", TOOLS.length + " tools across " + JOBS.length + " jobs");
   setText("coloDate", fmtDate(CHECKED));
   document.getElementById("footData").textContent =
-    withRepo + " of " + TOOLS.length + " entries carry metadata read from the GitHub API on " +
-    fmtDate(CHECKED) + ". Counts are as published on that date.";
+    TOOLS.length + " tools · " + JOBS.length + " jobs · checked " + fmtDate(CHECKED);
 
   if (window.matchMedia && window.matchMedia("(max-width: 560px)").matches) {
     input.placeholder = "what are you trying to do?";
