@@ -6,13 +6,23 @@
   "use strict";
 
   var DATA = window.TOOLSCOUT;
-  if (!DATA || !DATA.tools) {
+  if (!DATA || !DATA.rows) {
     document.getElementById("jobs").innerHTML =
       '<p class="empty">Catalogue failed to load. Check that data/tools.js is present.</p>';
     return;
   }
 
-  var TOOLS = DATA.tools;
+  var FIELDS = DATA.fields || [];
+  var RENDER_CAP = 150;
+
+  var TOOLS = (DATA.rows || []).map(function (r) {
+    var o = {};
+    FIELDS.forEach(function (k, i) { o[k] = r[i]; });
+    o.jobs = o.jobs || [];
+    o.url = o.url || ("https://github.com/" + o.repo);
+    o.detail = !!o.detail;
+    return o;
+  });
   var JOBS = DATA.jobs;
   var CHECKED = DATA.checked;
   var CHECKED_MS = Date.parse(CHECKED + "T00:00:00Z");
@@ -91,6 +101,14 @@
   var PROPRIETARY = { Proprietary: 1, Unknown: 1, NOASSERTION: 1, Unclear: 1, Custom: 1 };
   function isOpen(t) { return !PROPRIETARY[fmtLicence(t.licence)]; }
 
+  function passesFacets(t) {
+    for (var i = 0; i < FACETS.length; i++) {
+      var f = FACETS[i];
+      if (state.facets[f.id] && !f.test(t)) return false;
+    }
+    return true;
+  }
+
   function health(t) {
     if (t.archived) return { band: "dead", label: "Archived" };
     if (!t.pushed) return { band: "stale", label: "No repo" };
@@ -103,15 +121,14 @@
   /* ---------------------------------------------------------- facets */
 
   var FACETS = [
-    { id: "free",     label: "Free tier",     test: function (t) { return t.cost === "free" || t.cost === "freemium"; } },
-    { id: "oss",      label: "Open source",   test: isOpen },
-    { id: "selfhost", label: "Self-hostable", test: function (t) { return !!t.selfhost; } },
-    { id: "active",   label: "Active",        test: function (t) { return health(t).band === "fresh"; } },
-    { id: "library",  label: "Library",       test: function (t) { return t.kind === "library"; } },
-    { id: "service",  label: "Service",       test: function (t) { return t.kind === "service"; } },
-    { id: "app",      label: "App",           test: function (t) { return t.kind === "app"; } },
-    { id: "cli",      label: "CLI",           test: function (t) { return t.kind === "cli"; } }
+    { id: "active",  label: "Active",    test: function (t) { return health(t).band === "fresh"; } },
+    { id: "popular", label: "10k+ stars", test: function (t) { return (t.stars || 0) >= 10000; } },
+    { id: "ts",      label: "TypeScript", test: function (t) { return t.lang === "TypeScript"; } },
+    { id: "py",      label: "Python",     test: function (t) { return t.lang === "Python"; } },
+    { id: "go",      label: "Go",         test: function (t) { return t.lang === "Go"; } },
+    { id: "rust",    label: "Rust",       test: function (t) { return t.lang === "Rust"; } }
   ];
+
   var FACET_BY_ID = {};
   FACETS.forEach(function (f) { FACET_BY_ID[f.id] = f; });
 
@@ -212,9 +229,9 @@
   function haystack(t) {
     return {
       name: t.name.toLowerCase(),
-      tags: t.tags.join(" ").toLowerCase(),
-      tagline: t.tagline.toLowerCase(),
-      note: t.note.toLowerCase(),
+      tags: "",
+      tagline: (t.tagline || "").toLowerCase(),
+      note: (t.note || "").toLowerCase(),
       jobs: t.jobs.map(function (id) {
         return (JOB_BY_ID[id] ? JOB_BY_ID[id].title + " " + JOB_BY_ID[id].blurb : id);
       }).join(" ").toLowerCase()
@@ -231,8 +248,11 @@
   }
 
   function score(t, toks, intents) {
-    if (!toks.length && !(intents && intents.length)) return { score: 1, hits: 0 };
+    var noQuery = !toks.length && !(intents && intents.length);
+    if (noQuery) return { score: 1, hits: 0 };
+
     var h = HAY[t.id], total = 0, hits = 0;
+
     if (intents && intents.length) {
       /* intent must outrank stray word hits: "log in" should not surface
          a tool that merely says "logs" in its tagline */
@@ -241,6 +261,7 @@
         if (t.jobs[0] === jid) total += 12;
       });
     }
+
     for (var i = 0; i < toks.length; i++) {
       var k = toks[i], s = 0;
       if (h.name.indexOf(k) === 0) s += 10;
@@ -253,16 +274,12 @@
       if (s > 0) hits++;
       total += s;
     }
-    return { score: total, hits: hits };
-  }
 
-  /* ---------------------------------------------------------- filtering */
-
-  function passesFacets(t) {
-    for (var id in state.facets) {
-      if (state.facets[id] && !FACET_BY_ID[id].test(t)) return false;
+    /* popularity only breaks ties between real matches — never creates one */
+    if (total > 0 && t.stars) {
+      total += Math.min(10, Math.log(t.stars + 1) / Math.LN10 * 1.6);
     }
-    return true;
+    return { score: total, hits: hits };
   }
 
   function select() {
@@ -358,9 +375,11 @@
     var h = health(t);
     var band = h.band === "stale" ? "muted" : h.band;
 
-    return '<li class="tool" data-health="' + h.band + '">' +
+    return '<li class="tool" data-health="' + h.band + '" data-id="' + esc(t.id) + '">' +
       '<div class="tool__cell">' +
-        '<h3 class="tool__name"><a href="tools/' + esc(t.id) + '.html">' +
+        '<h3 class="tool__name"><a href="' +
+          (t.detail ? "tools/" + esc(t.id) + ".html" : esc(t.url)) + '"' +
+          (t.detail ? "" : ' target="_blank" rel="noopener"') + ">" +
           highlight(t.name, toks) + "</a></h3>" +
         '<span class="tool__kind">' + esc(KIND[t.kind] || t.kind) + "</span>" +
       "</div>" +
@@ -410,20 +429,23 @@
       countEl.textContent = "";
       toolsEl.innerHTML = "";
       emptyEl.hidden = true;
-      paintMatrix(null);
       return;
     }
 
     var rows = select();
     var toks = tokens(state.q);
-    toolsEl.innerHTML = rows.map(function (r) { return toolRow(r.t, toks); }).join("");
+    /* painting thousands of rows janks the browser; show the best 150 */
+    var shown = rows.slice(0, RENDER_CAP);
+    toolsEl.innerHTML = shown.map(function (r) { return toolRow(r.t, toks); }).join("");
     emptyEl.hidden = rows.length > 0;
     if (!rows.length) renderSuggestions();
-    paintMatrix(rows.map(function (r) { return r.t; }));
 
     var total = TOOLS.length;
     countEl.innerHTML = "<b>" + rows.length + "</b> of " + total +
-      " tools" + (describe() ? " — " + esc(describe()) : "");
+      " tools" + (describe() ? " — " + esc(describe()) : "") +
+      (rows.length > shown.length
+        ? " · showing the first " + shown.length + ", narrow the search for more"
+        : "");
   }
 
   /* ---------------------------------------------------------- wiring */
@@ -514,45 +536,6 @@
     }
   });
 
-  /* ---------------------------------------------------------- matrix */
-
-  var matrixEl = document.getElementById("matrix");
-  var matrixCaption = document.getElementById("matrixCaption");
-  var matrixDots = [];
-
-  function renderMatrix() {
-    if (!matrixEl) return;
-    matrixEl.innerHTML = TOOLS.map(function (t) {
-      return '<span data-tool="' + esc(t.id) + '" style="--c:' +
-        signalColor(t) + '" title="' +
-        esc(t.name + " — " + (JOB_BY_ID[t.jobs[0]] ? JOB_BY_ID[t.jobs[0]].title : t.jobs[0])) +
-        '"></span>';
-    }).join("");
-    matrixDots = Array.prototype.slice.call(matrixEl.children);
-  }
-
-  function paintMatrix(matches) {
-    if (!matrixDots.length) return;
-    var on = matches ? new Set(matches.map(function (t) { return t.id; })) : null;
-    matrixDots.forEach(function (d) {
-      var id = d.getAttribute("data-tool");
-      if (!on) {
-        d.classList.remove("is-dim", "is-match");
-      } else if (on.has(id)) {
-        d.classList.remove("is-dim");
-        d.classList.add("is-match");
-      } else {
-        d.classList.remove("is-match");
-        d.classList.add("is-dim");
-      }
-    });
-    if (matrixCaption) {
-      matrixCaption.textContent = on
-        ? matches.length + " of " + TOOLS.length + " tools match"
-        : "One square per tool — green alive, blue slowing, red stale";
-    }
-  }
-
   /* -------------------------------------------------- recently updated */
 
   function renderRecent() {
@@ -579,9 +562,11 @@
   /* ---------------------------------------------------------- boot */
 
   var withRepo = TOOLS.filter(function (t) { return !!t.repo; }).length;
+  var hc = document.getElementById("heroCount");
+  if (hc) hc.textContent = TOOLS.length.toLocaleString("en-IN");
   document.getElementById("mastheadNote").textContent =
-    TOOLS.length + " tools · " + JOBS.length + " jobs · " +
-    withRepo + " with live repo data · checked " + fmtDate(CHECKED);
+    TOOLS.length.toLocaleString("en-IN") + " tools · " + JOBS.length +
+    " jobs · checked " + fmtDate(CHECKED);
 
   var setText = function (id, v) {
     var el = document.getElementById(id);
@@ -589,7 +574,7 @@
   };
   setText("statTools", TOOLS.length);
   setText("statJobs", JOBS.length);
-  setText("statRepos", withRepo);
+  setText("statRepos", TOOLS.filter(function (t) { return health(t).band === "fresh"; }).length);
   setText("statDate", fmtDate(CHECKED));
   setText("indexMeta", TOOLS.length + " tools across " + JOBS.length + " jobs");
   setText("coloDate", fmtDate(CHECKED));
@@ -600,7 +585,6 @@
     input.placeholder = "what are you trying to do?";
   }
 
-  renderMatrix();
   renderRecent();
 
   readURL();

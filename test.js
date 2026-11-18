@@ -29,27 +29,33 @@ const names = () => $$("#tools .tool__name").map((n) => n.textContent.trim());
 
 (async () => {
   console.log("catalogue");
-  ok(DATA.tools.length === 117, "117 tools");
+  ok(DATA.rows.length > 2000, "thousands of tools: " + DATA.rows.length);
   ok(DATA.jobs.length === 17, "17 jobs");
-  ok(new Set(DATA.tools.map((t) => t.id)).size === 117, "ids unique");
-  ok(DATA.tools.every((t) => /^https:\/\//.test(t.url)), "urls are https");
+  ok(new Set(DATA.rows.map((r) => r[0])).size === DATA.rows.length, "ids unique");
+  ok(DATA.rows.every((r) => !r[3] || /^https:\/\//.test(r[3])), "urls are https or empty");
+  ok(DATA.rows.every((r) => r[7] >= 400), "every entry clears the star floor");
+  ok(DATA.rows.every((r) => !!r[6]), "every entry carries a licence");
+  ok(DATA.rows.every((r) => r[8] >= "2025-11-18"), "every entry pushed within 12 months");
+  const junk = /sample|demo|template|boilerplate|awesome|tutorial|course|playground|sandbox/i;
+  ok(!DATA.rows.some((r) => junk.test(r[1] + " " + r[4])), "no samples or reading lists");
 
   console.log("pages generated");
   const toolPages = fs.readdirSync(path.join(SITE, "tools")).filter((f) => f.endsWith(".html"));
   const jobPages = fs.readdirSync(path.join(SITE, "jobs")).filter((f) => f.endsWith(".html"));
-  ok(toolPages.length === 117, "117 tool pages, got " + toolPages.length);
+  ok(toolPages.length === 600, "600 tool pages, got " + toolPages.length);
   ok(jobPages.length === 17, "17 job pages, got " + jobPages.length);
   ok(fs.existsSync(path.join(SITE, "method.html")), "method page exists");
   ok(fs.existsSync(path.join(SITE, "sitemap.xml")), "sitemap exists");
   const sitemap = fs.readFileSync(path.join(SITE, "sitemap.xml"), "utf8");
-  ok((sitemap.match(/<url>/g) || []).length === 136, "136 sitemap urls");
-  const onePage = fs.readFileSync(path.join(SITE, "tools/react.html"), "utf8");
+  ok((sitemap.match(/<url>/g) || []).length === 619, "619 sitemap urls");
+  const sampleTool = toolPages.sort()[0];
+  const onePage = fs.readFileSync(path.join(SITE, "tools", sampleTool), "utf8");
   ok(onePage.includes("../site.css"), "sub-page asset paths are relative");
   ok(onePage.includes("canonical"), "sub-page has a canonical url");
 
   console.log("index");
   ok($$("#jobs .job").length === 17, "17 job tiles");
-  ok($$("#facets .ts-chip").length === 8, "8 filter chips");
+  ok($$("#facets .ts-chip").length === 6, "6 filter chips");
   ok($$("#jobs .job").every((a) => a.tagName === "A"), "job tiles are links");
   ok($("#jobs .job").getAttribute("href").startsWith("jobs/"), "tile links to a job page");
   ok($("#results").hidden === true, "results hidden on load");
@@ -58,35 +64,39 @@ const names = () => $$("#tools .tool__name").map((n) => n.textContent.trim());
   console.log("rows link to detail pages");
   await type("email");
   ok($$("#tools .tool").length > 0, "search returns rows");
-  ok($("#tools .tool__name a").getAttribute("href").startsWith("tools/"), "row links to a tool page");
+  ok(/^(tools\/|https:\/\/)/.test($("#tools .tool__name a").getAttribute("href")),
+     "row links to a detail page or straight out");
   ok($$("#tools .tool__meta dt").length === 3 * $$("#tools .tool").length,
      "each row shows exactly three attributes");
 
   console.log("automatic intent matching");
   const cases = [
-    ["i need people to log in", /Clerk|Keycloak|Kratos|Hanko|Better Auth|Auth\.js/i, "login -> auth"],
-    ["take payments", /Stripe|Razorpay|Paddle|Polar|Hyperswitch|Lemon/i, "payments"],
-    ["monitoring", /Grafana|Prometheus|Sentry|SigNoz|Netdata|Uptime/i, "monitoring"],
-    ["deployment", /Docker|Caddy|Kamal|Coolify|Dokku|Fly\.io|Railway|Render|Vercel/i, "deployment"],
-    ["where do i store uploads", /MinIO|Uppy|UploadThing|Cloudflare R2|tusd/i, "file storage"],
+    ["i need people to log in", "auth"],
+    ["take payments", "payments"],
+    ["monitoring", "observe"],
+    ["deployment", "deploy"],
+    ["where do i store uploads", "files"],
   ];
-  for (const [q, re, label] of cases) {
+  for (const [q, jobId] of cases) {
     await type(q);
     const got = names();
-    ok(got.length > 0, label + ": returns results (" + got.length + ")");
-    ok(got.some((n) => re.test(n)), label + ": " + got.slice(0, 3).join(", "));
-    ok(re.test(got[0]), label + ": intent tool ranks first, got " + got[0]);
+    const id = $("#tools .tool").getAttribute("data-id");
+    const tool = window.TOOLSCOUT.rows.find((r) => r[0] === id);
+    ok(got.length > 0, jobId + ": returns results (" + got.length + ")");
+    ok(!!tool && tool[5].indexOf(jobId) > -1,
+       jobId + ": top hit belongs to the job, got " + got[0]);
   }
 
   console.log("filters and sort");
   await type("");
   $("#clear").dispatchEvent(new window.MouseEvent("click", { bubbles: true }));
-  const oss = $$("#facets .ts-chip").find((c) => c.dataset.facet === "oss");
-  oss.dispatchEvent(new window.MouseEvent("click", { bubbles: true }));
-  ok($$("#tools .tool").length > 0, "facet alone shows results");
-  ok($$("#facets .ts-chip").find((c) => c.dataset.facet === "oss")
+  await type("database");
+  const tsChip = $$("#facets .ts-chip").find((c) => c.dataset.facet === "ts");
+  tsChip.dispatchEvent(new window.MouseEvent("click", { bubbles: true }));
+  ok($$("#tools .tool").length > 0, "facet stacks on a query");
+  ok($$("#facets .ts-chip").find((c) => c.dataset.facet === "ts")
        .getAttribute("aria-pressed") === "true", "chip pressed state");
-  ok(window.location.search.includes("f=oss"), "facet in url");
+  ok(window.location.search.includes("f=ts"), "facet in url");
   $("#clear").dispatchEvent(new window.MouseEvent("click", { bubbles: true }));
   ok(window.location.search === "", "url cleared");
 
@@ -97,11 +107,9 @@ const names = () => $$("#tools .tool__name").map((n) => n.textContent.trim());
   ok(!!$("#drawerBackdrop"), "drawer backdrop present");
   ok($$(".stats .stat").length === 4, "four stats in the band");
 
-  console.log("matrix");
-  ok($$("#matrix span").length === 117, "117 squares");
+  console.log("no matrix");
+  ok(!doc.querySelector("#matrix"), "square grid removed");
   await type("email");
-  ok($$("#matrix span.is-match").length > 0, "matches highlighted");
-  ok($$("#matrix span.is-dim").length > 0, "others dim");
 
   console.log("empty state");
   await type("zzzqqq");

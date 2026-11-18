@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Toolscout — find developer tools by the job, not the name</title>
-<meta name="description" content="117 developer tools across 17 jobs. Ordered by what you are trying to do, with maintenance signals read from GitHub.">
+<title>Toolscout — 4,427 developer tools, ordered by the job to be done</title>
+<meta name="description" content="4,427 developer tools across 17 jobs, every one active, licensed and un-archived, with maintenance signals read from GitHub.">
 <meta name="theme-color" content="#161616">
 <link rel="canonical" href="https://apsideslabs.github.io/toolscout/">
 <link rel="preload" href="fonts/inter-normal-400.woff2" as="font" type="font/woff2" crossorigin>
@@ -76,7 +76,7 @@
       <div class="hero__main">
         <p class="hero__eyebrow">A task-first index of developer tools</p>
         <h1 class="hero__title">Start with the job.<br><span>The tool is the easy part.</span></h1>
-        <p class="hero__sub">117 tools filed under what they actually do, with the maintenance signal read from each repository — not a star count. Search in plain English, or open a job and browse.</p>
+        <p class="hero__sub"><span id="heroCount">4,427</span> tools filed under what they actually do — each one active, licensed and un-archived, with the maintenance signal read from its repository rather than a star count. Search in plain English, or open a job and browse.</p>
 
         <form class="searchrow" id="need" role="search" autocomplete="off">
           <div class="search">
@@ -93,9 +93,6 @@
         <div class="filters" id="facets" role="group" aria-label="Constraints"></div>
       </div>
 
-      <aside class="matrix-wrap" aria-label="Every tool in the catalogue">
-        <div class="matrix" id="matrix"></div>
-      </aside>
     </div>
   </section>
 
@@ -103,7 +100,7 @@
     <div class="shell stats__grid">
       <div class="stat"><span class="stat__n" id="statTools">—</span><span class="stat__l">tools indexed</span></div>
       <div class="stat"><span class="stat__n" id="statJobs">—</span><span class="stat__l">jobs covered</span></div>
-      <div class="stat"><span class="stat__n" id="statRepos">—</span><span class="stat__l">repos verified</span></div>
+      <div class="stat"><span class="stat__n" id="statRepos">—</span><span class="stat__l">active this month</span></div>
       <div class="stat"><span class="stat__n stat__n--sm" id="statDate">—</span><span class="stat__l">last checked</span></div>
     </div>
   </section>

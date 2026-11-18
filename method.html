@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Method — Toolscout</title>
-<meta name="description" content="How entries are chosen and what the health bands mean.">
+<meta name="description" content="The five tests every entry passes.">
 <meta name="theme-color" content="#1c1b27">
 <link rel="canonical" href="https://apsideslabs.github.io/toolscout/method.html">
 <link rel="preload" href="fonts/inter-normal-400.woff2" as="font" type="font/woff2" crossorigin>
@@ -30,23 +30,23 @@
     <nav class="drawer__nav" aria-label="All sections">
       <a class="drawer__link drawer__link--top" href="index.html">Index</a>
       <p class="drawer__label">Jobs</p>
-      <a class="drawer__link" href="jobs/frontend.html"><span class="drawer__n">01</span>Build the interface</a>
-<a class="drawer__link" href="jobs/auth.html"><span class="drawer__n">02</span>Add sign-in and permissions</a>
-<a class="drawer__link" href="jobs/database.html"><span class="drawer__n">03</span>Store and query data</a>
-<a class="drawer__link" href="jobs/api.html"><span class="drawer__n">04</span>Build, document and test an API</a>
-<a class="drawer__link" href="jobs/deploy.html"><span class="drawer__n">05</span>Get it running in production</a>
-<a class="drawer__link" href="jobs/ci.html"><span class="drawer__n">06</span>Automate build and test</a>
-<a class="drawer__link" href="jobs/observe.html"><span class="drawer__n">07</span>See what production is doing</a>
-<a class="drawer__link" href="jobs/email.html"><span class="drawer__n">08</span>Send mail and notifications</a>
-<a class="drawer__link" href="jobs/payments.html"><span class="drawer__n">09</span>Take money</a>
-<a class="drawer__link" href="jobs/search.html"><span class="drawer__n">10</span>Make things findable</a>
-<a class="drawer__link" href="jobs/files.html"><span class="drawer__n">11</span>Store and serve files</a>
-<a class="drawer__link" href="jobs/ai.html"><span class="drawer__n">12</span>Add a model to the product</a>
-<a class="drawer__link" href="jobs/automate.html"><span class="drawer__n">13</span>Glue services and run jobs</a>
-<a class="drawer__link" href="jobs/docs.html"><span class="drawer__n">14</span>Write and publish documentation</a>
-<a class="drawer__link" href="jobs/terminal.html"><span class="drawer__n">15</span>Move faster in the shell</a>
-<a class="drawer__link" href="jobs/editor.html"><span class="drawer__n">16</span>Write and review code</a>
-<a class="drawer__link" href="jobs/design.html"><span class="drawer__n">17</span>Design and prototype</a>
+        <a class="drawer__link" href="jobs/frontend.html"><span class="drawer__n">01</span>Build the interface</a>
+        <a class="drawer__link" href="jobs/auth.html"><span class="drawer__n">02</span>Add sign-in and permissions</a>
+        <a class="drawer__link" href="jobs/database.html"><span class="drawer__n">03</span>Store and query data</a>
+        <a class="drawer__link" href="jobs/api.html"><span class="drawer__n">04</span>Build, document and test an API</a>
+        <a class="drawer__link" href="jobs/deploy.html"><span class="drawer__n">05</span>Get it running in production</a>
+        <a class="drawer__link" href="jobs/ci.html"><span class="drawer__n">06</span>Automate build and test</a>
+        <a class="drawer__link" href="jobs/observe.html"><span class="drawer__n">07</span>See what production is doing</a>
+        <a class="drawer__link" href="jobs/email.html"><span class="drawer__n">08</span>Send mail and notifications</a>
+        <a class="drawer__link" href="jobs/payments.html"><span class="drawer__n">09</span>Take money</a>
+        <a class="drawer__link" href="jobs/search.html"><span class="drawer__n">10</span>Make things findable</a>
+        <a class="drawer__link" href="jobs/files.html"><span class="drawer__n">11</span>Store and serve files</a>
+        <a class="drawer__link" href="jobs/ai.html"><span class="drawer__n">12</span>Add a model to the product</a>
+        <a class="drawer__link" href="jobs/automate.html"><span class="drawer__n">13</span>Glue services and run jobs</a>
+        <a class="drawer__link" href="jobs/docs.html"><span class="drawer__n">14</span>Write and publish documentation</a>
+        <a class="drawer__link" href="jobs/terminal.html"><span class="drawer__n">15</span>Move faster in the shell</a>
+        <a class="drawer__link" href="jobs/editor.html"><span class="drawer__n">16</span>Write and review code</a>
+        <a class="drawer__link" href="jobs/design.html"><span class="drawer__n">17</span>Design and prototype</a>
       <p class="drawer__label">More</p>
       <a class="drawer__link drawer__link--top" href="method.html">Method</a>
       <a class="drawer__link drawer__link--top" href="https://github.com/apsideslabs/toolscout">Source</a>
@@ -67,25 +67,21 @@
 <section class="page-head">
   <div class="shell">
     <p class="label">Method</p>
-    <h1 class="page-title">How an entry gets here</h1>
+    <h1 class="page-title">How a tool gets in</h1>
+    <p class="page-lede">3844 tools across 17 jobs. Every one of them passed the same five tests, and the tests run again every month.</p>
   </div>
 </section>
 <section class="shell section">
-  <div class="spec spec--method">
-    <div><dt>01</dt><dd>Chosen by job, not by category. A tool can sit under several — Postgres is a database and a search option.</dd></div>
-    <div><dt>02</dt><dd>Health comes from the repository: last push, licence, language and stars, read from the GitHub API at build time.</dd></div>
-    <div><dt>03</dt><dd>Fresh is a push within 30 days, slowing within a year, stale beyond that. Archived means the repository is closed.</dd></div>
-    <div><dt>04</dt><dd>No paid placement. Order follows your query, recency, or stars. A listing never proves a tool is safe.</dd></div>
-  </div>
+  <ol class="checks"><li><b>Not archived.</b> A repository the maintainer has closed is excluded, however popular it is.</li><li><b>Pushed within twelve months.</b> A tool that has not moved in a year is not maintained, whatever the README says.</li><li><b>Carries a licence.</b> No licence means no legal right to use it. Those entries are dropped.</li><li><b>At least 400 stars.</b> A floor for community validation, not a quality score.</li><li><b>Metadata read at build time.</b> Stars, licence, language and last push come from the GitHub API, not from a directory listing.</li></ol>
 </section>
 <section class="shell section">
-  <h2 class="page-sub">Before you install anything</h2>
-  <ol class="checks"><li><b>Read the last commit and the last release.</b> Commits this month plus a release this quarter is alive. An eighteen-month-old release is a risk you are choosing to take.</li><li><b>Treat stars as an order of magnitude.</b> 40,000 against 400 is real information. 12,000 against 9,000 is noise.</li><li><b>Check the licence, and any recent change to it.</b> A move from an open licence to source-available is a commercial pivot, and the free tier becomes a business decision.</li><li><b>Look for a Docker image and a Compose file.</b> They signal that upgrades, persistent data and reverse proxies have been thought about.</li><li><b>Read the open issues, not the README.</b> Sort by most-commented. It shows what actually hurts, and whether maintainers answer.</li></ol>
+  <h2 class="page-sub">What this index will not claim</h2>
+  <p class="page-lede">A listing is not an endorsement. Admission means a project is public, active and licensed — not that it is secure, well-designed, or right for your problem. Read the open issues before you install anything.</p>
 </section>
 </main>
 <footer class="foot">
   <div class="shell foot__row">
-    <span>117 tools · 17 jobs · checked 17 Nov 2026</span>
+    <span>3844 tools · 17 jobs · checked 18 Nov 2026</span>
     <span><a href="method.html">Method</a> · <a href="https://github.com/apsideslabs/toolscout">Source</a></span>
   </div>
 </footer>
