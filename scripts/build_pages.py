@@ -29,8 +29,11 @@ CHECKED = D["checked"]
 JOB = {j["id"]: j for j in JOBS}
 KIND = {"library": "Library", "service": "Service", "app": "App", "cli": "CLI"}
 
-JOB_COLOR = {j["id"]: "var(--job-%d)" % (i % 8 + 1)
+JOB_COLOR = {j["id"]: ["var(--blue)", "var(--red)", "var(--green)"][i % 3]
              for i, j in enumerate(JOBS)}
+
+SIGNAL = {"fresh": "var(--green)", "slowing": "var(--blue)",
+          "dead": "var(--red)", "stale": "var(--faint)"}
 
 
 def esc(s):
@@ -84,7 +87,7 @@ def matrix(active_ids, base, caption):
     for t in TOOLS:
         lit = " is-match" if t["id"] in on else (" is-dim" if active_ids else "")
         dots.append('<span class="%s" style="--c:%s" title="%s"></span>'
-                    % (lit.strip(), JOB_COLOR.get(t["jobs"][0], "var(--border)"),
+                    % (lit.strip(), SIGNAL.get(health(t)[0], "var(--faint)"),
                        esc(t["name"])))
     return ('<div class="matrix">%s</div>\n<p class="matrix__caption">%s</p>'
             % ("".join(dots), esc(caption)))

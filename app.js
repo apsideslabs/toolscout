@@ -23,8 +23,17 @@
 
   var JOB_COLOR = {};
   JOBS.forEach(function (j, i) {
-    JOB_COLOR[j.id] = "var(--job-" + (i % 8 + 1) + ")";
+    JOB_COLOR[j.id] = ["var(--blue)", "var(--red)", "var(--green)"][i % 3];
   });
+
+  /* the three colours carry meaning: green alive, blue slowing, red stale */
+  function signalColor(t) {
+    var b = health(t).band;
+    if (b === "fresh") return "var(--green)";
+    if (b === "slowing") return "var(--blue)";
+    if (b === "dead") return "var(--red)";
+    return "var(--faint)";
+  }
 
   var JOB_BY_ID = {};
   JOBS.forEach(function (j) { JOB_BY_ID[j.id] = j; });
@@ -515,7 +524,7 @@
     if (!matrixEl) return;
     matrixEl.innerHTML = TOOLS.map(function (t) {
       return '<span data-tool="' + esc(t.id) + '" style="--c:' +
-        (JOB_COLOR[t.jobs[0]] || "var(--border)") + '" title="' +
+        signalColor(t) + '" title="' +
         esc(t.name + " — " + (JOB_BY_ID[t.jobs[0]] ? JOB_BY_ID[t.jobs[0]].title : t.jobs[0])) +
         '"></span>';
     }).join("");
@@ -540,7 +549,7 @@
     if (matrixCaption) {
       matrixCaption.textContent = on
         ? matches.length + " of " + TOOLS.length + " tools match"
-        : "One square per tool, coloured by job";
+        : "One square per tool — green alive, blue slowing, red stale";
     }
   }
 
