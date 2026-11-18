@@ -147,6 +147,57 @@
     "some something that this is are be can how do does it its from by as no not " +
     "you your our there here what which who when where why tool tools app apps").split(" ");
 
+  /* People do not search in our vocabulary. Map their phrasing to jobs. */
+  var INTENTS = [
+    { re: /log ?in|sign ?in|sign ?up|auth|sso|oauth|password|account|session/i, jobs: ["auth"] },
+    { re: /email|mail|newsletter|notif/i, jobs: ["email"] },
+    { re: /pay|billing|checkout|subscri|invoice|money|stripe|razorpay/i, jobs: ["payments"] },
+    { re: /database|store (data|stuff)|persist|sql|query|table|schema/i, jobs: ["database"] },
+    { re: /deploy|host|ship|production|server|vps|container|docker/i, jobs: ["deploy"] },
+    { re: /monitor|observ|metric|trace|logging|\blogs?\b(?!\s*in\b)|uptime|error track|alert/i, jobs: ["observe"] },
+    { re: /ci|pipeline|automat.*test|build.*test|continuous/i, jobs: ["ci"] },
+    { re: /search|find|typo|relevance|autocomplete/i, jobs: ["search"] },
+    { re: /upload|file|image|media|storage|cdn|asset/i, jobs: ["files"] },
+    { re: /ai|llm|model|gpt|claude|chatbot|embedding|vector|prompt/i, jobs: ["ai"] },
+    { re: /docs|documentation|api reference|manual/i, jobs: ["docs"] },
+    { re: /design|prototype|mockup|icon|wireframe|figma/i, jobs: ["design"] },
+    { re: /editor|ide|vim|code editor|lint|format/i, jobs: ["editor"] },
+    { re: /terminal|shell|command line|cli|prompt/i, jobs: ["terminal"] },
+    { re: /ui|front ?end|react|component|css|landing page|website|site/i, jobs: ["frontend"] },
+    { re: /api|rest|graphql|endpoint|openapi|webhook/i, jobs: ["api", "automate"] },
+    { re: /background job|queue|cron|job runner|retry|workflow/i, jobs: ["automate"] }
+  ];
+
+  var SYNONYMS = {
+    login: ["auth", "sso"], signin: ["auth"], signup: ["auth"],
+    mail: ["email"], emails: ["email"], newsletter: ["email"],
+    db: ["database"], postgres: ["database"], sql: ["database"],
+    host: ["deploy"], hosting: ["deploy"], server: ["deploy"], prod: ["deploy"],
+    monitoring: ["observe"], logs: ["observe"], metrics: ["observe"],
+    tests: ["ci"], testing: ["ci", "api"],
+    files: ["files"], uploads: ["files"], images: ["files"],
+    llm: ["ai"], gpt: ["ai"], chatbot: ["ai"],
+    docs: ["docs"], documentation: ["docs"],
+    money: ["payments"], billing: ["payments"], checkout: ["payments"],
+    ui: ["frontend"], website: ["frontend"], site: ["frontend"]
+  };
+
+  function expand(toks) {
+    var out = toks.slice();
+    toks.forEach(function (t) {
+      var s = t.replace(/s$/, "");
+      if (SYNONYMS[t]) out = out.concat(SYNONYMS[t]);
+      else if (SYNONYMS[s]) out = out.concat(SYNONYMS[s]);
+    });
+    return out.filter(function (v, i, a) { return a.indexOf(v) === i; });
+  }
+
+  function intentsFor(q) {
+    var hit = [];
+    INTENTS.forEach(function (it) { if (it.re.test(q)) hit = hit.concat(it.jobs); });
+    return hit.filter(function (v, i, a) { return a.indexOf(v) === i; });
+  }
+
   function tokens(q) {
     return q.toLowerCase().split(/[^a-z0-9+.#-]+/).filter(function (w) {
       return w.length > 1 && STOP.indexOf(w) === -1;
@@ -168,9 +219,23 @@
   var HAY = {};
   TOOLS.forEach(function (t) { HAY[t.id] = haystack(t); });
 
-  function score(t, toks) {
-    if (!toks.length) return { score: 1, hits: 0 };
+  function wordPrefixMatch(hay, k) {
+    /* "deploy" should find "deployment"; "postgres" should find "PostgreSQL" */
+    if (k.length < 4) return false;
+    return hay.indexOf(k) > -1;
+  }
+
+  function score(t, toks, intents) {
+    if (!toks.length && !(intents && intents.length)) return { score: 1, hits: 0 };
     var h = HAY[t.id], total = 0, hits = 0;
+    if (intents && intents.length) {
+      /* intent must outrank stray word hits: "log in" should not surface
+         a tool that merely says "logs" in its tagline */
+      intents.forEach(function (jid) {
+        if (t.jobs.indexOf(jid) > -1) total += 30;
+        if (t.jobs[0] === jid) total += 12;
+      });
+    }
     for (var i = 0; i < toks.length; i++) {
       var k = toks[i], s = 0;
       if (h.name.indexOf(k) === 0) s += 10;
@@ -179,6 +244,7 @@
       if (h.jobs.indexOf(k) > -1) s += 3;
       if (h.tagline.indexOf(k) > -1) s += 3;
       if (h.note.indexOf(k) > -1) s += 1;
+      if (!s && wordPrefixMatch(h.name, k)) s += 5;
       if (s > 0) hits++;
       total += s;
     }
@@ -195,14 +261,16 @@
   }
 
   function select() {
-    var toks = tokens(state.q);
+    var raw = tokens(state.q);
+    var toks = expand(raw);
+    var intents = intentsFor(state.q);
     var rows = [];
 
     TOOLS.forEach(function (t) {
       if (state.job && t.jobs.indexOf(state.job) === -1) return;
       if (!passesFacets(t)) return;
-      var sc = score(t, toks);
-      if (toks.length && sc.score < 2) return;
+      var sc = score(t, toks, intents);
+      if ((raw.length || intents.length) && sc.score < 2) return;
       rows.push({ t: t, score: sc.score, hits: sc.hits });
     });
 
@@ -211,8 +279,8 @@
 
     rows.sort(function (a, b) {
       if (sort === "relevance") {
-        if (b.hits !== a.hits) return b.hits - a.hits;
         if (b.score !== a.score) return b.score - a.score;
+        if (b.hits !== a.hits) return b.hits - a.hits;
         return a.t.name.localeCompare(b.t.name);
       }
       if (sort === "health") {
@@ -299,6 +367,18 @@
           esc(h.label) + "</span></dd></div>" +
       "</dl>" +
       "</li>";
+  }
+
+  var SUGGESTIONS = ["log in", "send email", "take payments", "store data",
+                     "deploy", "monitoring", "open source", "self-hostable"];
+
+  function renderSuggestions() {
+    var row = document.getElementById("suggestRow");
+    if (!row) return;
+    row.innerHTML = SUGGESTIONS.map(function (s) {
+      return '<button class="suggest" type="button" data-suggest="' + esc(s) + '">' +
+        esc(s) + "</button>";
+    }).join("");
   }
 
   function describe() {
@@ -497,6 +577,6 @@
   readURL();
   input.value = state.q;
   sortEl.value = state.sort;
-  if (state.q) hint.textContent = "Matching on name, job, tag and trade-off text.";
+  if (hint && state.q) hint.textContent = "Matching on intent, name, job, tag and trade-off text.";
   render();
 })();
