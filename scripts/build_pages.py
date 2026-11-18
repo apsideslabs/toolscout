@@ -29,10 +29,7 @@ CHECKED = D["checked"]
 JOB = {j["id"]: j for j in JOBS}
 KIND = {"library": "Library", "service": "Service", "app": "App", "cli": "CLI"}
 
-PALETTE = ["blue", "purple", "teal", "magenta", "red", "green",
-           "cyan", "cool-gray", "blue", "purple", "teal", "magenta",
-           "red", "green", "cyan", "cool-gray", "blue"]
-JOB_COLOR = {j["id"]: "var(--cds-tag-color-%s)" % PALETTE[i % len(PALETTE)]
+JOB_COLOR = {j["id"]: "var(--job-%d)" % (i % 8 + 1)
              for i, j in enumerate(JOBS)}
 
 
@@ -87,7 +84,7 @@ def matrix(active_ids, base, caption):
     for t in TOOLS:
         lit = " is-match" if t["id"] in on else (" is-dim" if active_ids else "")
         dots.append('<span class="%s" style="--c:%s" title="%s"></span>'
-                    % (lit.strip(), JOB_COLOR.get(t["jobs"][0], "var(--cds-border-subtle-01)"),
+                    % (lit.strip(), JOB_COLOR.get(t["jobs"][0], "var(--border)"),
                        esc(t["name"])))
     return ('<div class="matrix">%s</div>\n<p class="matrix__caption">%s</p>'
             % ("".join(dots), esc(caption)))
@@ -105,21 +102,22 @@ def shell(title, desc, base, body, canonical=""):
 %s
 <link rel="preload" href="%sfonts/ibm-plex-sans-normal-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="%sfonts.css">
-<link rel="stylesheet" href="%scarbon/carbon.css">
 <link rel="stylesheet" href="%ssite.css">
 <link rel="icon" href="%sassets/mark.svg">
 </head>
-<body class="cds--g100">
+<body>
 <a class="skip-link" href="#main">Skip to content</a>
-<header class="cds--header" role="banner">
-  <a class="cds--header__name" href="%sindex.html"><span class="cds--header__name--prefix">Tool</span>scout</a>
-  <nav class="cds--header__nav" aria-label="Sections">
-    <ul class="cds--header__menu-bar">
-      <li><a class="cds--header__menu-item" href="%sindex.html#index">Index</a></li>
-      <li><a class="cds--header__menu-item" href="%smethod.html">Method</a></li>
-      <li><a class="cds--header__menu-item" href="https://github.com/apsideslabs/toolscout" rel="noopener">Source</a></li>
+<header class="topbar" role="banner">
+  <div class="shell topbar__row">
+  <a class="topbar__name" href="%sindex.html"><span class="topbar__prefix">Tool</span>scout</a>
+  <nav class="topbar__nav" aria-label="Sections">
+    <ul class="topbar__menu">
+      <li><a class="topbar__link" href="%sindex.html#index">Index</a></li>
+      <li><a class="topbar__link" href="%smethod.html">Method</a></li>
+      <li><a class="topbar__link" href="https://github.com/apsideslabs/toolscout" rel="noopener">Source</a></li>
     </ul>
   </nav>
+  </div>
 </header>
 <main id="main">
 %s
@@ -127,7 +125,7 @@ def shell(title, desc, base, body, canonical=""):
 <footer class="foot">
   <div class="shell foot__row">
     <span>%d tools · %d jobs · checked %s</span>
-    <span><a class="cds--link" href="%smethod.html">Method</a> · <a class="cds--link" href="https://github.com/apsideslabs/toolscout">Source</a></span>
+    <span><a class="link" href="%smethod.html">Method</a> · <a class="link" href="https://github.com/apsideslabs/toolscout">Source</a></span>
   </div>
 </footer>
 </body>
@@ -135,7 +133,7 @@ def shell(title, desc, base, body, canonical=""):
 """ % (esc(title), esc(desc),
        ('<link rel="canonical" href="%s">' % canonical) if canonical else "",
        base, base, base, base, base,
-       base, base, base,
+       base, base,
        body, len(TOOLS), len(JOBS), fmt_date(CHECKED), base)
 
 
@@ -175,7 +173,7 @@ for i, j in enumerate(JOBS):
     <nav class="crumbs" aria-label="Breadcrumb">
       <a href="../index.html">Index</a> <span>/</span> <span>%s</span>
     </nav>
-    <p class="cds--label" style="color:%s">%02d · %d tools</p>
+    <p class="label" style="color:%s">%02d · %d tools</p>
     <h1 class="page-title">%s</h1>
     <p class="page-lede">%s</p>
   </div>
@@ -187,8 +185,8 @@ for i, j in enumerate(JOBS):
   <ol class="tools">%s</ol>
 </section>
 <section class="shell section pager">
-  <a class="cds--link" href="%s.html">← %s</a>
-  <a class="cds--link" href="%s.html">%s →</a>
+  <a class="link" href="%s.html">← %s</a>
+  <a class="link" href="%s.html">%s →</a>
 </section>""" % (
         esc(j["title"]), JOB_COLOR[j["id"]], i + 1, len(members),
         esc(j["title"]), esc(j["blurb"]),
@@ -207,7 +205,7 @@ by_id = {t["id"]: t for t in TOOLS}
 for idx, t in enumerate(TOOLS):
     band, label = health(t)
     jobs_html = "".join(
-        '<a class="cds--tag ts-chip" href="../jobs/%s.html" style="--job-c:%s">%s</a>'
+        '<a class="tag ts-chip" href="../jobs/%s.html" style="--job-c:%s">%s</a>'
         % (jid, JOB_COLOR[jid], esc(JOB[jid]["title"])) for jid in t["jobs"])
     flags = []
     if t.get("archived"):
@@ -216,7 +214,7 @@ for idx, t in enumerate(TOOLS):
         flags.append('<span class="flag">Self-hostable</span>')
     if t.get("lang"):
         flags.append('<span class="flag">%s</span>' % esc(t["lang"]))
-    repo = ('<a class="cds--link" href="https://github.com/%s" rel="noopener">%s</a>'
+    repo = ('<a class="link" href="https://github.com/%s" rel="noopener">%s</a>'
             % (esc(t["repo"]), esc(t["repo"]))) if t.get("repo") else "—"
 
     prev_t = TOOLS[idx - 1]
@@ -228,12 +226,12 @@ for idx, t in enumerate(TOOLS):
       <a href="../index.html">Index</a> <span>/</span>
       <a href="../jobs/%s.html">%s</a> <span>/</span> <span>%s</span>
     </nav>
-    <p class="cds--label">%s</p>
+    <p class="label">%s</p>
     <h1 class="page-title">%s</h1>
     <p class="page-lede">%s</p>
     <p class="page-note"><span>Trade-off</span>%s</p>
     <div class="page-actions">
-      <a class="cds--btn cds--btn--primary" href="%s" target="_blank" rel="noopener">Visit %s</a>
+      <a class="btn btn--primary" href="%s" target="_blank" rel="noopener">Visit %s</a>
       %s
     </div>
   </div>
@@ -254,8 +252,8 @@ for idx, t in enumerate(TOOLS):
   %s
 </section>
 <section class="shell section pager">
-  <a class="cds--link" href="%s.html">← %s</a>
-  <a class="cds--link" href="%s.html">%s →</a>
+  <a class="link" href="%s.html">← %s</a>
+  <a class="link" href="%s.html">%s →</a>
 </section>""" % (
         t["jobs"][0], esc(JOB[t["jobs"][0]]["title"]), esc(t["name"]),
         esc(KIND.get(t["kind"], t["kind"])),
@@ -288,7 +286,7 @@ checks = [
 ]
 body = """<section class="page-head">
   <div class="shell">
-    <p class="cds--label">Method</p>
+    <p class="label">Method</p>
     <h1 class="page-title">How an entry gets here</h1>
   </div>
 </section>

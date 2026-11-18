@@ -21,13 +21,9 @@
   var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
                 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-  var PALETTE = ["blue", "purple", "teal", "magenta", "red", "green",
-                 "cyan", "cool-gray", "blue", "purple", "teal", "magenta",
-                 "red", "green", "cyan", "cool-gray", "blue"];
-
   var JOB_COLOR = {};
   JOBS.forEach(function (j, i) {
-    JOB_COLOR[j.id] = "var(--cds-tag-color-" + PALETTE[i % PALETTE.length] + ")";
+    JOB_COLOR[j.id] = "var(--job-" + (i % 8 + 1) + ")";
   });
 
   var JOB_BY_ID = {};
@@ -302,7 +298,7 @@
   function renderFacets() {
     facetsEl.innerHTML = FACETS.map(function (f) {
       var n = TOOLS.filter(f.test).length;
-      return '<button class="cds--tag ts-chip" type="button" data-facet="' + f.id +
+      return '<button class="tag ts-chip" type="button" data-facet="' + f.id +
         '" aria-pressed="' + (state.facets[f.id] ? "true" : "false") + '">' +
         esc(f.label) + '<span class="ts-chip__n">' + n + "</span></button>";
     }).join("");
@@ -519,7 +515,7 @@
     if (!matrixEl) return;
     matrixEl.innerHTML = TOOLS.map(function (t) {
       return '<span data-tool="' + esc(t.id) + '" style="--c:' +
-        (JOB_COLOR[t.jobs[0]] || "var(--cds-border-subtle-01)") + '" title="' +
+        (JOB_COLOR[t.jobs[0]] || "var(--border)") + '" title="' +
         esc(t.name + " — " + (JOB_BY_ID[t.jobs[0]] ? JOB_BY_ID[t.jobs[0]].title : t.jobs[0])) +
         '"></span>';
     }).join("");

@@ -25,9 +25,7 @@ Most directories are alphabetical, which means you need the name before you can 
 
 **No paid placement.** Nothing is ranked by who paid. Order comes from your query, from recency, or from stars.
 
-**Built on IBM Carbon, not on vibes.** The interface is the Carbon Design System v11 (Apache-2.0): its header, search field, filter tags, tiles, select, buttons, links and accordion, plus 658 `--cds-*` custom properties for every colour, border and surface. Type is IBM Plex Sans and Mono, self-hosted. `site.css` is a layout layer for the parts Carbon does not ship — the hero, the job grid and the catalogue table — written entirely against Carbon tokens, so the page inherits the system rather than imitating it.
-
-Why Carbon and not the alternatives: Primer CSS is in keep-the-lights-on mode, the Polaris React library was archived in September 2026 and its licence only covers Shopify apps, and Adobe states Spectrum CSS should only be used by Spectrum implementations. Carbon is the one that is actively maintained, framework-agnostic and documented against WCAG 2.1 AA.
+**Warm paper, deep navy, one brass accent.** The field is `#f7f5ef` and carries about 60% of every screen; deep navy `#12304f` carries structure at 30%; brass `#a9803a` appears at roughly 10% and never touches body copy. Type is DM Sans for the interface, Source Serif 4 for display and reading, JetBrains Mono for every label and number — all SIL OFL and self-hosted. Depth is soft and layered: four shadow steps, 8–18px radii, 1px hairlines. No framework and no CSS library; `site.css` is the whole system, and it is 20 KB.
 
 **Searchable by constraint.** Free tier, open source, self-hostable, active, library, service, app, CLI — stackable, encoded in the URL, and copyable with one button, so a filtered view is a shareable link.
 
@@ -47,13 +45,11 @@ tools/<slug>.html     117 tool pages — spec, trade-off, jobs, matrix
 method.html           how entries are chosen
 sitemap.xml           136 URLs
 app.js                index filtering and ranking (~330 lines, no dependencies)
-site.css              layout layer written against Carbon tokens
-carbon.scss           the Carbon entry: only the components this site renders
-carbon/carbon.css     compiled from carbon.scss + the g100 theme tokens
+site.css              the entire design system, 20 KB, no build step
 data/tools.js         generated catalogue
 scripts/build_data.py catalogue source + GitHub metadata fetch
 scripts/build_pages.py generates the 135 pages and the sitemap
-fonts/                IBM Plex WOFF2, OFL 1.1
+fonts/                DM Sans, Source Serif 4, JetBrains Mono (OFL 1.1)
 ```
 
 There is no build step to serve the site — the pages are static files. The two
@@ -106,19 +102,9 @@ The script batches up to 40 repositories per GraphQL query, so the whole catalog
 
 ---
 
-## Building the stylesheet
+## The stylesheet
 
-Carbon's prebuilt sheet is 1.1 MB because it carries every component. `carbon.scss`
-imports only the twelve this site uses:
-
-```bash
-npm i @carbon/styles sass
-npx sass carbon.scss /tmp/c.css --no-source-map --style=compressed --load-path=node_modules
-# prepend carbon/theme.css (the .cds--g100 and .cds--white token blocks), then:
-# cat carbon/theme.css /tmp/c.css > carbon/carbon.css
-```
-
-That is 240 KB instead of 1.1 MB. Rebuild it only when a new Carbon component is used.
+One file, no build step. Edit `site.css` and reload.
 
 ## Refreshing the metadata
 

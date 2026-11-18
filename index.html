@@ -9,26 +9,27 @@
 <link rel="canonical" href="https://apsideslabs.github.io/toolscout/">
 <link rel="preload" href="fonts/ibm-plex-sans-normal-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fonts.css">
-<link rel="stylesheet" href="carbon/carbon.css">
 <link rel="stylesheet" href="site.css">
 <link rel="icon" href="assets/mark.svg">
 </head>
-<body class="cds--g100">
+<body>
 
 <a class="skip-link" href="#index">Skip to the index</a>
 
-<header class="cds--header" role="banner">
-  <a class="cds--header__name" href="index.html">
-    <span class="cds--header__name--prefix">Tool</span>scout
+<header class="topbar" role="banner">
+  <div class="shell topbar__row">
+  <a class="topbar__name" href="index.html">
+    <span class="topbar__prefix">Tool</span>scout
   </a>
-  <nav class="cds--header__nav" aria-label="Sections">
-    <ul class="cds--header__menu-bar">
-      <li><a class="cds--header__menu-item" href="#index">Index</a></li>
-      <li><a class="cds--header__menu-item" href="method.html">Method</a></li>
-      <li><a class="cds--header__menu-item" href="https://github.com/apsideslabs/toolscout" rel="noopener">Source</a></li>
+  <nav class="topbar__nav" aria-label="Sections">
+    <ul class="topbar__menu">
+      <li><a class="topbar__link" href="#index">Index</a></li>
+      <li><a class="topbar__link" href="method.html">Method</a></li>
+      <li><a class="topbar__link" href="https://github.com/apsideslabs/toolscout" rel="noopener">Source</a></li>
     </ul>
   </nav>
-  <p class="cds--header__meta" id="mastheadNote"></p>
+  <p class="topbar__meta" id="mastheadNote"></p>
+  </div>
 </header>
 
 <main>
@@ -38,15 +39,15 @@
         <h1 class="hero__title">Start with the job.<br><span>The tool is the easy part.</span></h1>
 
         <form class="searchrow" id="need" role="search" autocomplete="off">
-          <div class="cds--search">
+          <div class="search">
             <label class="sr" for="q">Describe what you need</label>
-            <svg class="cds--search-magnifier" viewBox="0 0 32 32" aria-hidden="true">
+            <svg class="search__icon" viewBox="0 0 32 32" aria-hidden="true">
               <path d="M29 27.586l-7.552-7.552a11.018 11.018 0 10-1.414 1.414L27.586 29zM4 13a9 9 0 119 9 9.01 9.01 0 01-9-9z"/>
             </svg>
-            <input class="cds--search-input" id="q" name="q" type="search" spellcheck="false"
+            <input class="search__input" id="q" name="q" type="search" spellcheck="false"
                    placeholder="send transactional email without a monthly minimum">
           </div>
-          <button class="cds--btn cds--btn--primary searchrow__go" type="submit">Find</button>
+          <button class="btn btn--primary searchrow__go" type="submit">Find</button>
         </form>
 
         <div class="filters" id="facets" role="group" aria-label="Constraints"></div>
@@ -63,7 +64,7 @@
     <div class="shell">
       <div class="section-head" id="indexHead">
         <div>
-          <p class="cds--label">Browse</p>
+          <p class="label">Browse</p>
           <h2 class="section-title" id="browseTitle">Seventeen jobs</h2>
         </div>
         <p class="section-meta" id="indexMeta"></p>
@@ -76,16 +77,16 @@
           <p class="results__count" id="resultCount" aria-live="polite"></p>
           <div class="results__controls">
             <label class="sr" for="sort">Sort results</label>
-            <div class="cds--select cds--select--inline">
-              <select class="cds--select-input" id="sort">
-                <option class="cds--select-option" value="relevance">Most relevant</option>
-                <option class="cds--select-option" value="health">Recently updated</option>
-                <option class="cds--select-option" value="stars">Most starred</option>
-                <option class="cds--select-option" value="name">A–Z</option>
+            <div class="select select--inline">
+              <select class="select__input" id="sort">
+                <option class="select__option" value="relevance">Most relevant</option>
+                <option class="select__option" value="health">Recently updated</option>
+                <option class="select__option" value="stars">Most starred</option>
+                <option class="select__option" value="name">A–Z</option>
               </select>
             </div>
-            <button class="cds--btn cds--btn--sm cds--btn--tertiary" id="share" type="button">Copy link</button>
-            <button class="cds--btn cds--btn--sm cds--btn--ghost" id="clear" type="button">Clear</button>
+            <button class="btn btn--sm btn--tertiary" id="share" type="button">Copy link</button>
+            <button class="btn btn--sm btn--ghost" id="clear" type="button">Clear</button>
           </div>
         </div>
         <ol class="tools" id="tools"></ol>
@@ -101,7 +102,7 @@
 <footer class="foot">
   <div class="shell foot__row">
     <span id="footData"></span>
-    <span><a class="cds--link" href="method.html">Method</a> · <a class="cds--link" href="https://github.com/apsideslabs/toolscout">Source</a> · MIT</span>
+    <span><a class="link" href="method.html">Method</a> · <a class="link" href="https://github.com/apsideslabs/toolscout">Source</a> · MIT</span>
   </div>
 </footer>
 
